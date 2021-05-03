@@ -15,7 +15,8 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    public static Scene scene;
+    public static Stage stage;
     @FXML
     private TextField property_address_field;
 
@@ -23,6 +24,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Main"));
         stage.setScene(scene);
+        this.stage =stage;
         stage.show();
 
     }

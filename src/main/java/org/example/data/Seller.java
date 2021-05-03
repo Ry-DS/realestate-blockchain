@@ -9,7 +9,7 @@ public class Seller {
     private File buildingDesign;
     private int licenseNumber;
 
-    Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, int licenseNumber) {
+    public Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, int licenseNumber) {
         this.propertyAddress = propertyAddress;
         this.ownerVendorFirstName = ownerVendorFirstName;
         this.ownerVendorLastName = ownerVendorLastName;
@@ -37,6 +37,11 @@ public class Seller {
     public int getLicenseNumber() {
         return licenseNumber;
     }
+
+
+
+
+
 }
 
 
