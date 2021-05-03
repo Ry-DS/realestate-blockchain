@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="674.0">
+         <children>
+            <Button layoutX="46.0" layoutY="165.0" mnemonicParsing="false" onAction="#BuyerForm" prefHeight="88.0" prefWidth="111.0" text="Buyer" />
+            <Button layoutX="206.0" layoutY="165.0" mnemonicParsing="false" onAction="#SellerForm" prefHeight="88.0" prefWidth="111.0" text="Seller" />
+            <Button layoutX="365.0" layoutY="165.0" mnemonicParsing="false" onAction="#Bank" prefHeight="88.0" prefWidth="111.0" text="Bank" />
+            <Button layoutX="522.0" layoutY="165.0" mnemonicParsing="false" onAction="#Authority" prefHeight="88.0" prefWidth="111.0" text="Authority" />
+            <Button layoutX="551.0" layoutY="23.0" mnemonicParsing="false" onAction="#Login" prefHeight="23.0" prefWidth="94.0" text="Login" />
+            <Label layoutX="86.0" layoutY="66.0" text="Secutity in IT Computing Systems Assignment 2 - Blockchain">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="281.0" layoutY="94.0" text="Main Page">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

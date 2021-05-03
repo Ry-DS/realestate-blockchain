@@ -3,6 +3,8 @@ package org.example;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+
 public class SellerController {
     @FXML
     TextField property_address_field;
@@ -24,6 +26,8 @@ licence_number_field.clear();
     }
 
 
-
+    @FXML
+    private void cancel() throws IOException {
+        App.setRoot("Main");
+    }
 }
-

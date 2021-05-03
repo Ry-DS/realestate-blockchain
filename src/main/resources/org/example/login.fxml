@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.LoginController">
    <left>
       <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #ff6347;" BorderPane.alignment="CENTER">
          <children>
@@ -52,7 +52,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button id="cancel" cancelButton="true" layoutX="34.0" layoutY="323.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="226.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
+            <Button id="cancel" cancelButton="true" layoutX="34.0" layoutY="323.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="226.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

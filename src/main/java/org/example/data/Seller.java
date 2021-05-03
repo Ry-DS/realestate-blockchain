@@ -15,7 +15,7 @@ public class Seller {
         this.ownerVendorLastName = ownerVendorLastName;
         this.buildingDesign = buildingDesign;
         this.licenseNumber = licenseNumber;
-s
+
     }
 
     public String getPropertyAddress() {

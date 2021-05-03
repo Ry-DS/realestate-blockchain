@@ -18,5 +18,6 @@
       <TextField id="licence_number_field" fx:id="licence_number_field" layoutX="195.0" layoutY="187.0" promptText="L001" />
       <ButtonBar layoutX="93.0" layoutY="291.0" prefHeight="40.0" prefWidth="200.0" />
     <Button id="submit_button" layoutX="287.0" layoutY="282.0" mnemonicParsing="false" onAction="#submit" text="Submit" textFill="#292bc8" />
+      <Button layoutX="46.0" layoutY="282.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
    </children>
 </AnchorPane>

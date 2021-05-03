@@ -25,7 +25,6 @@ public class BuyerController {
     @FXML
     ComboBox addressProperty;
 
-
     public void menuClose(ActionEvent event){
         Platform.exit();
         System.exit(0);
@@ -47,7 +46,7 @@ public class BuyerController {
 
     @FXML
     private void cancel() throws IOException {
-        App.setRoot("primary");
+        App.setRoot("Main");
     }
 
 }
