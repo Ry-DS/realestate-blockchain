@@ -1,11 +1,11 @@
-package org.example;
+package com.rmit.blockchain;
 
+import com.rmit.blockchain.data.Buyer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import org.example.data.Buyer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

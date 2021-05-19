@@ -1,4 +1,4 @@
-package org.example;
+package com.rmit.blockchain;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

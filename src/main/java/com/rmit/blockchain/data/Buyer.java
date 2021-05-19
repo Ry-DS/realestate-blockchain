@@ -1,4 +1,4 @@
-package org.example.data;
+package com.rmit.blockchain.data;
 
 import javafx.scene.control.ComboBox;
 

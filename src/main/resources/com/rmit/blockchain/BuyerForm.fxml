@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="515.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.BuyerController">
+<VBox prefHeight="515.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.blockchain.BuyerController">
    <children>
       <MenuBar prefHeight="0.0" prefWidth="793.0">
         <menus>

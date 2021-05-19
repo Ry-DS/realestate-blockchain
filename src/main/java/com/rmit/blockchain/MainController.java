@@ -1,4 +1,4 @@
-package org.example;
+package com.rmit.blockchain;
 
 import javafx.fxml.FXML;
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="building_design_field" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="327.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.SellerController">
+<AnchorPane fx:id="building_design_field" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="327.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.blockchain.SellerController">
    <children>
       <Text fill="#0c6a36" layoutX="39.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Property Address:" />
       <Text id="owner_vendor_name" fill="#0c6a36" layoutX="39.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner/Vendor Name:" />
