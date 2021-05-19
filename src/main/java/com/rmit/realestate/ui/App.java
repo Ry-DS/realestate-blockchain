@@ -1,4 +1,4 @@
-package com.rmit.blockchain;
+package com.rmit.realestate.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -24,7 +24,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Main"));
         stage.setScene(scene);
-        this.stage =stage;
+        App.stage = stage;
         stage.show();
 
     }

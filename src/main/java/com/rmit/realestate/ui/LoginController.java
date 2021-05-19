@@ -1,4 +1,4 @@
-package com.rmit.blockchain;
+package com.rmit.realestate.ui;
 
 import javafx.fxml.FXML;
 

@@ -1,13 +1,13 @@
-package com.rmit.blockchain.data;
+package com.rmit.realestate.data;
 
 import java.io.File;
 
 public class Seller {
-    private String propertyAddress;
-    private String ownerVendorFirstName;
-    private String ownerVendorLastName;
-    private File buildingDesign;
-    private int licenseNumber;
+    private final String propertyAddress;
+    private final String ownerVendorFirstName;
+    private final String ownerVendorLastName;
+    private final File buildingDesign;
+    private final int licenseNumber;
 
     public Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, int licenseNumber) {
         this.propertyAddress = propertyAddress;

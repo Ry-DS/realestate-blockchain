@@ -9,19 +9,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.blockchain.LoginController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16"
+            fx:controller="com.rmit.realestate.ui.LoginController">
    <left>
-      <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #ff6347;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #ff6347;"
+                  BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="164.0" fitWidth="168.0" layoutX="30.0" layoutY="83.0" pickOnBounds="true">
                <image>
-                  <Image url="@bank.png" />
+                  <Image url="@bank.png"/>
                </image>
             </ImageView>
             <Label layoutX="76.0" layoutY="256.0" text="Login" textFill="WHITE">
                <font>
-                  <Font size="31.0" />
+                  <Font size="31.0"/>
                </font>
             </Label>
          </children>
@@ -32,29 +34,32 @@
          <children>
             <ImageView fitHeight="62.0" fitWidth="68.0" layoutX="112.0" layoutY="44.0" pickOnBounds="true">
                <image>
-                  <Image url="@lock.png" />
+                  <Image url="@lock.png"/>
                </image>
             </ImageView>
             <Label layoutX="23.0" layoutY="154.0" text="Username:">
                <font>
-                  <Font name="Agency FB" size="23.0" />
+                  <Font name="Agency FB" size="23.0"/>
                </font>
             </Label>
             <Label layoutX="24.0" layoutY="206.0" text="Password:">
                <font>
-                  <Font name="Agency FB" size="23.0" />
+                  <Font name="Agency FB" size="23.0"/>
                </font>
             </Label>
-            <TextField id="userName" layoutX="106.0" layoutY="156.0" />
-            <PasswordField id="password" layoutX="106.0" layoutY="209.0" />
-            <Button id="login" layoutX="34.0" layoutY="274.0" mnemonicParsing="false" prefHeight="12.0" prefWidth="226.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
+            <TextField id="userName" layoutX="106.0" layoutY="156.0"/>
+            <PasswordField id="password" layoutX="106.0" layoutY="209.0"/>
+            <Button id="login" layoutX="34.0" layoutY="274.0" mnemonicParsing="false" prefHeight="12.0"
+                    prefWidth="226.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="14.0"/>
                </font>
             </Button>
-            <Button id="cancel" cancelButton="true" layoutX="34.0" layoutY="323.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="226.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
+            <Button id="cancel" cancelButton="true" layoutX="34.0" layoutY="323.0" mnemonicParsing="false"
+                    onAction="#cancel" prefHeight="30.0" prefWidth="226.0" styleClass="cancel1"
+                    stylesheets="@styles.css" text="Cancel" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="14.0"/>
                </font>
             </Button>
          </children>

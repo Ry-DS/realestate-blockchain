@@ -1,6 +1,6 @@
-package com.rmit.blockchain;
+package com.rmit.realestate.ui;
 
-import com.rmit.blockchain.data.Buyer;
+import com.rmit.realestate.data.Buyer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

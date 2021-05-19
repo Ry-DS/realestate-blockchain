@@ -1,17 +1,15 @@
-package com.rmit.blockchain.data;
-
-import javafx.scene.control.ComboBox;
+package com.rmit.realestate.data;
 
 import java.util.Date;
 
 public class Buyer {
-    private String fullName;
-    private Date dob;
-    private String currentAddress;
-    private String contactNumber;
-    private String employerName;
-    private int loanAmount;
-    private String propertyAddress;
+    private final String fullName;
+    private final Date dob;
+    private final String currentAddress;
+    private final String contactNumber;
+    private final String employerName;
+    private final int loanAmount;
+    private final String propertyAddress;
 
     public Buyer(String fullName, Date dob, String currentAddress, String contactNumber, String employerName, int loanAmount, String propertyAddress) {
         this.fullName = fullName;

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="515.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/16"
+      fx:controller="com.rmit.realestate.ui.BuyerController">
+   <children>
+      <MenuBar prefHeight="0.0" prefWidth="793.0">
+         <menus>
+            <Menu id="menuFile" mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem id="menuClose" mnemonicParsing="false" onAction="#menuClose" text="Close"/>
+               </items>
+            </Menu>
+            <Menu id="menuHelp" mnemonicParsing="false" text="Help">
+               <items>
+                  <CustomMenuItem id="menuHelpPop" mnemonicParsing="false"
+                                  text="This is a form to apply for a loan. Choose a house you would like to purchase from the list. Then submit the application form and wait for the bank to approve it.">
+                     <content>
+                        <CheckBox text="Click Me"/>
+                     </content>
+                  </CustomMenuItem>
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                  prefHeight="489.0" prefWidth="890.0">
+         <children>
+            <ImageView fitHeight="490.0" fitWidth="890.0" pickOnBounds="true">
+               <image>
+                  <Image url="@8P9vWS.jpg"/>
+               </image>
+            </ImageView>
+            <TextField id="fullName" fx:id="fullName" layoutX="210.0" layoutY="129.0"/>
+            <Label layoutX="327.0" layoutY="31.0" text="Welcome to The Bank" textFill="#348dd1">
+               <font>
+                  <Font name="System Bold" size="23.0"/>
+               </font>
+            </Label>
+            <Label layoutX="224.0" layoutY="78.0"
+                   text="Please fill in the form below to submit an application for your loan:">
+               <font>
+                  <Font name="System Bold" size="14.0"/>
+               </font>
+            </Label>
+            <TextField id="dob" fx:id="dob" layoutX="210.0" layoutY="169.0"/>
+            <TextField id="currentAddress" fx:id="currentAddress" layoutX="210.0" layoutY="209.0"/>
+            <TextField id="contactNumber" fx:id="contactNumber" layoutX="210.0" layoutY="246.0"/>
+            <TextField id="employerName" fx:id="employerName" layoutX="210.0" layoutY="285.0"/>
+            <Label layoutX="80.0" layoutY="129.0" text="Fullname:" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0"/>
+               </font>
+            </Label>
+            <Label layoutX="70.0" layoutY="171.0" text="Date of Birth:" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0"/>
+               </font>
+            </Label>
+            <Label layoutX="59.0" layoutY="209.0" text="Current Address:" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0"/>
+               </font>
+            </Label>
+            <Label layoutX="58.0" layoutY="248.0" text="Contact Number:" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0"/>
+               </font>
+            </Label>
+            <Label layoutX="57.0" layoutY="289.0" text="Employer Name:" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0"/>
+               </font>
+            </Label>
+            <TextField id="addressProperty" disable="true" layoutX="210.0" layoutY="324.0"/>
+            <Label layoutX="30.0" layoutY="328.0" text="Address of Purchasing Property:" textAlignment="CENTER"/>
+            <TextField id="loanAmount" fx:id="loanAmount" layoutX="210.0" layoutY="363.0"/>
+            <Label layoutX="64.0" layoutY="363.0" text="Loan Amount:">
+               <font>
+                  <Font size="16.0"/>
+               </font>
+            </Label>
+            <Button id="submit" layoutX="277.0" layoutY="428.0" mnemonicParsing="false" onAction="#submit"
+                    prefHeight="26.0" prefWidth="110.0" styleClass="submit" stylesheets="@styles.css" text="Submit">
+               <font>
+                  <Font name="System Bold" size="12.0"/>
+               </font>
+            </Button>
+            <Button id="clear" layoutX="155.0" layoutY="428.0" mnemonicParsing="false" onAction="#clear"
+                    prefHeight="26.0" prefWidth="110.0" styleClass="clear" stylesheets="@styles.css" text="Clear"
+                    textFill="#0033ff">
+               <font>
+                  <Font name="System Bold" size="12.0"/>
+               </font>
+            </Button>
+            <Button id="cancel" cancelButton="true" layoutX="33.0" layoutY="428.0" mnemonicParsing="false"
+                    onAction="#cancel" prefHeight="26.0" prefWidth="110.0" styleClass="cancel" stylesheets="@styles.css"
+                    text="Cancel">
+               <font>
+                  <Font name="System Bold" size="12.0"/>
+               </font>
+            </Button>
+            <Label layoutX="502.0" layoutY="119.0" text="Below are the list of available properties for sale">
+               <font>
+                  <Font name="System Italic" size="14.0"/>
+               </font>
+            </Label>
+            <Label layoutX="435.0" layoutY="145.0"
+                   text="The property you want to buy write its address in the form to the right:">
+               <font>
+                  <Font name="System Italic" size="14.0"/>
+               </font>
+            </Label>
+            <Label layoutX="468.0" layoutY="428.0" text="Loan Application ID:">
+               <font>
+                  <Font name="System Bold" size="20.0"/>
+               </font>
+            </Label>
+            <ImageView fitHeight="67.0" fitWidth="60.0" layoutX="568.0" layoutY="14.0" pickOnBounds="true"
+                       preserveRatio="true">
+               <image>
+                  <Image url="@bank.png"/>
+               </image>
+            </ImageView>
+            <ImageView fitHeight="67.0" fitWidth="60.0" layoutX="262.0" layoutY="14.0" pickOnBounds="true"
+                       preserveRatio="true">
+               <image>
+                  <Image url="@bank.png"/>
+               </image>
+            </ImageView>
+            <Label id="LoanID" layoutX="685.0" layoutY="428.0">
+               <font>
+                  <Font name="System Bold" size="20.0"/>
+               </font>
+            </Label>
+            <ComboBox fx:id="addressProperty" layoutX="209.0" layoutY="324.0" prefWidth="150.0"
+                      promptText="Select a Property"/>
+            <TableView layoutX="435.0" layoutY="171.0" prefHeight="219.0" prefWidth="410.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="C1"/>
+                  <TableColumn prefWidth="75.0" text="C2"/>
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
