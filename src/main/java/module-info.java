@@ -2,6 +2,7 @@ module com.rmit.realestate {
     requires javafx.controls;
     requires javafx.fxml;
     requires kryonet;
+    requires org.bouncycastle.provider;
 
     opens com.rmit.realestate.ui to javafx.fxml;
     opens com.rmit.realestate.data to javafx.fxml;

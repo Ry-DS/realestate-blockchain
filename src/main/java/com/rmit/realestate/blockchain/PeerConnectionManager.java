@@ -4,10 +4,12 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.rmit.realestate.data.Packet;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class PeerConnectionManager {
     // Servers only SEND data
@@ -18,6 +20,7 @@ public class PeerConnectionManager {
     private final int MAX_SEARCH_PORT = MIN_SEARCH_PORT + 10;
     private final List<Client> peerReceivers = new ArrayList<>();
     private final Server peerBroadcaster = new Server();
+    private final List<Consumer<Packet>> listeners = new ArrayList<>();
 
     public PeerConnectionManager() throws IOException {
         int port;
@@ -61,7 +64,6 @@ public class PeerConnectionManager {
                         });
                     } catch (IOException ex) {
                         // ignore
-                        System.out.println("Failed for " + i);
                     }
                 }
                 try {
@@ -77,12 +79,12 @@ public class PeerConnectionManager {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        new PeerConnectionManager();
-    }
-
     public void receivedMessage(Object obj) {
-        System.out.println(obj);
+        if (!(obj instanceof Packet))
+            return;
+        listeners.forEach(listener -> {
+            listener.accept((Packet) obj);
+        });
 
     }
 
