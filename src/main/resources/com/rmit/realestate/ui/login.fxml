@@ -9,60 +9,60 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/16"
-            fx:controller="com.rmit.realestate.ui.LoginController">
-   <left>
-      <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #ff6347;"
-                  BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="164.0" fitWidth="168.0" layoutX="30.0" layoutY="83.0" pickOnBounds="true">
-               <image>
-                  <Image url="@bank.png"/>
-               </image>
-            </ImageView>
-            <Label layoutX="76.0" layoutY="256.0" text="Login" textFill="WHITE">
-               <font>
-                  <Font size="31.0"/>
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </left>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.realestate.ui.LoginController">
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="332.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="515.0" prefWidth="556.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="62.0" fitWidth="68.0" layoutX="112.0" layoutY="44.0" pickOnBounds="true">
+            <ImageView fitHeight="62.0" fitWidth="68.0" layoutX="248.0" layoutY="103.0" pickOnBounds="true">
                <image>
-                  <Image url="@lock.png"/>
+                  <Image url="@lock.png" />
                </image>
             </ImageView>
-            <Label layoutX="23.0" layoutY="154.0" text="Username:">
+            <Label layoutX="158.0" layoutY="213.0" text="Username:">
                <font>
-                  <Font name="Agency FB" size="23.0"/>
+                  <Font name="Agency FB" size="23.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="206.0" text="Password:">
+            <Label layoutX="159.0" layoutY="265.0" text="Password:">
                <font>
-                  <Font name="Agency FB" size="23.0"/>
+                  <Font name="Agency FB" size="23.0" />
                </font>
             </Label>
-            <TextField id="userName" layoutX="106.0" layoutY="156.0"/>
-            <PasswordField id="password" layoutX="106.0" layoutY="209.0"/>
-            <Button id="login" layoutX="34.0" layoutY="274.0" mnemonicParsing="false" prefHeight="12.0"
-                    prefWidth="226.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
+            <TextField id="userName" fx:id="userName" layoutX="241.0" layoutY="215.0" />
+            <PasswordField id="password" fx:id="password" layoutX="241.0" layoutY="268.0" />
+            <Button id="login" layoutX="160.0" layoutY="333.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="235.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0"/>
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button id="cancel" cancelButton="true" layoutX="34.0" layoutY="323.0" mnemonicParsing="false"
-                    onAction="#cancel" prefHeight="30.0" prefWidth="226.0" styleClass="cancel1"
-                    stylesheets="@styles.css" text="Cancel" textFill="WHITE">
+            <Button id="cancel" cancelButton="true" layoutX="160.0" layoutY="382.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="237.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="14.0"/>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="475.0" layoutY="470.0" mnemonicParsing="false" onAction="#close" prefHeight="26.0" prefWidth="66.0" styleClass="quit" stylesheets="@styles.css" text="Quit">
+               <font>
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
    </right>
+   <center>
+      <AnchorPane prefHeight="515.0" prefWidth="334.0" style="-fx-background-color: #9ed3ff;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="164.0" fitWidth="168.0" layoutX="83.0" layoutY="139.0" pickOnBounds="true">
+               <image>
+                  <Image url="@icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="126.0" layoutY="330.0" text="Login">
+               <font>
+                  <Font name="System Bold" size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>

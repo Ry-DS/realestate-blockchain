@@ -1,12 +1,18 @@
 package com.rmit.realestate.ui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class SellerController {
@@ -18,34 +24,51 @@ public class SellerController {
     Button building_design_button;
     @FXML
     TextField licence_number_field;
-
     @FXML
     Label permitId;
 
+    @FXML
     File selectedFile;
+
 
     public void submit() {
 
-        // property_address_field.clear();
-        //  owner_vendor_name_field.clear();
-        //  licence_number_field.clear();
         String propertyAddress = property_address_field.getText();
-        // System.out.println("awd"+propertyAddress.length());
-        /*String properyAddress=property_address_field.getText();
-        String properyAddress=property_address_field.getText();
-        String properyAddress=property_address_field.getText();*/
-        System.out.println("zbcde".charAt(0));
-        System.out.println("zbcde".substring(1));
-        if (selectedFile == null) {
-            permitId.setText("File not given");
-            return;
-        }
+        String owner = owner_vendor_name_field.getText();
+        String licence = licence_number_field.getText();
+
+//        System.out.println("awd"+propertyAddress.length());
+//        System.out.println("zbcde".charAt(0));
+//        System.out.println("zbcde".substring(1));
+
         if (propertyAddress == null || propertyAddress.isBlank()) {
+            permitId.setTextFill(Color.RED);
             permitId.setText("Address not given");
             return;
         }
-       // Seller seller=new Seller(propertyAddress, );
-        permitId.setText("Permit Id: " + "3");
+        if (owner == null || owner.isBlank()) {
+            permitId.setTextFill(Color.RED);
+            permitId.setText("Owner/Vendor not given");
+            return;
+        }
+        if (licence == null || licence.isBlank()) {
+            permitId.setTextFill(Color.RED);
+            permitId.setText("Licence Number not given");
+            return;
+        }
+        if (selectedFile == null) {
+            permitId.setTextFill(Color.RED);
+            permitId.setText("No File Selected");
+            return;
+        }
+        if (propertyAddress != null && owner != null && licence != null && selectedFile != null){
+            permitId.setTextFill(Color.BLACK);
+            permitId.setText("Permit Application Id: " + "00001");
+            return;
+        }
+
+        // Seller seller=new Seller(propertyAddress, );
+
 
     }
 
@@ -62,8 +85,34 @@ public class SellerController {
 
     }
 
+    public void clear() {
+        property_address_field.clear();
+        owner_vendor_name_field.clear();
+        licence_number_field.clear();
+        selectedFile = null;
+        building_design_button.setText("Choose File");
+        permitId.setText("");
+    }
+
     @FXML
     private void cancel() throws IOException {
         App.setRoot("Main");
     }
+
+    @FXML
+    private void close() {
+        System.exit(0);
+        Platform.exit();
+    }
+
+    @FXML
+    private void about() {
+        Alert about = new Alert(Alert.AlertType.INFORMATION);
+        about.setTitle("Real Estate");
+        about.setContentText("Application Version: 1.0.0.0");
+        about.setHeaderText("About Real Estate - Seller");
+        about.show();
+        about.getGraphic().getClass().getResourceAsStream("icon.png");
+    }
+
 }

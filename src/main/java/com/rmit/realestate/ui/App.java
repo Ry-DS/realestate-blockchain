@@ -2,9 +2,11 @@ package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.PeerConnectionManager;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -28,7 +30,12 @@ public class App extends Application {
         stage.setScene(scene);
         App.stage = stage;
         stage.show();
-
+        stage.setResizable(false);
+        stage.setWidth(902);
+        stage.setHeight(552);
+        stage.setTitle("Blockchain Application");
+        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        stage.getIcons().add(icon);
     }
 
     static void setRoot(String fxml) throws IOException {

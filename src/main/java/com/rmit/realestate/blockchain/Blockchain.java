@@ -35,7 +35,8 @@ public class Blockchain {
 
         }
 
-
+        return false; // This was missing whe pulled from github, I have added this please make sure it was required.
+                      // Without The app doesn't run and error comes up
     }
 
     public Collection<Block<Verifiable>> getBlocks() {

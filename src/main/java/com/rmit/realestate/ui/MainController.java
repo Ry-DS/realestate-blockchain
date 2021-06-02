@@ -22,11 +22,16 @@ public class MainController {
 
     @FXML
     private void Authority() throws IOException {
-        App.setRoot("Authority");
+        App.setRoot("authority");
     }
 
     @FXML
     private void Bank() throws IOException {
-        App.setRoot("Bank");
+        App.setRoot("bank");
+    }
+
+    @FXML
+    private void close() {
+        System.exit(0);
     }
 }

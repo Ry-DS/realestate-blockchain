@@ -46,7 +46,7 @@
 
 
 .clear:pressed {
-    -fx-background-color: #bdfcc8;
+    -fx-background-color: #b0e7ff;
     -fx-background-radius: 30;
     -fx-border-width: 2;
     -fx-border-color: #479dff;
@@ -111,5 +111,201 @@
 
 .cancel1:pressed {
     -fx-background-color: #ff6145;
+
+}
+
+.accept {
+    -fx-background-color: #87bdff;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #59a4ff;
+    -fx-border-radius: 5;
+
+}
+
+.accept:hover {
+    -fx-background-color: #e0fff9;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #59a4ff;
+    -fx-border-radius: 5;
+
+}
+
+
+.accept:pressed {
+    -fx-background-color: #43c4ab;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #59a4ff;
+    -fx-border-radius: 5;
+
+}
+
+.decline {
+    -fx-background-color: #ffa696;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #fc8b77;
+    -fx-border-radius: 5;
+
+}
+
+.decline:hover {
+    -fx-background-color: #ffdfd9;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #fc8b77;
+    -fx-border-radius: 5;
+
+}
+
+
+.decline:pressed {
+    -fx-background-color: #ff6b4f;
+    -fx-background-radius: 5;
+    -fx-border-width: 2;
+    -fx-border-color: #fc8b77;
+    -fx-border-radius: 5;
+
+}
+
+.buyer {
+    -fx-background-color: #ffe7cc;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ffa136;
+    -fx-border-radius: 25;
+
+}
+
+.buyer:hover {
+    -fx-background-color: #ededed;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ffa136;
+    -fx-border-radius: 25;
+
+}
+
+
+.buyer:pressed {
+    -fx-background-color: #ffc58f;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ffa136;
+    -fx-border-radius: 25;
+
+}
+
+.seller {
+    -fx-background-color: #dac7ff;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #8c52ff;
+    -fx-border-radius: 25;
+
+}
+
+.seller:hover {
+    -fx-background-color: #ededed;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #8c52ff;
+    -fx-border-radius: 25;
+
+}
+
+
+.seller:pressed {
+    -fx-background-color: #af87ff;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #8c52ff;
+    -fx-border-radius: 25;
+
+}
+
+.bank {
+    -fx-background-color: #ffbacf;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ff6393;
+    -fx-border-radius: 25;
+
+}
+
+.bank:hover {
+    -fx-background-color: #ededed;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ff6393;
+    -fx-border-radius: 25;
+
+}
+
+
+.bank:pressed {
+    -fx-background-color: #ff94b4;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #ff6393;
+    -fx-border-radius: 25;
+
+}
+
+.authority {
+    -fx-background-color: #c2e6ff;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #52b8ff;
+    -fx-border-radius: 25;
+
+}
+
+.authority:hover {
+    -fx-background-color: #ededed;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #52b8ff;
+    -fx-border-radius: 25;
+
+}
+
+
+.authority:pressed {
+    -fx-background-color: #75c6ff;
+    -fx-background-radius: 25;
+    -fx-border-width: 2;
+    -fx-border-color: #52b8ff;
+    -fx-border-radius: 25;
+
+}
+
+.quit {
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 2;
+    -fx-border-color: #ff7569;
+    -fx-border-radius: 30;
+
+}
+
+.quit:hover {
+    -fx-background-color: #ffded4;
+    -fx-background-radius: 30;
+    -fx-border-width: 2;
+    -fx-border-color: #ff7569;
+    -fx-border-radius: 30;
+
+}
+
+
+.quit:pressed {
+    -fx-background-color: #ffab91;
+    -fx-background-radius: 30;
+    -fx-border-width: 2;
+    -fx-border-color: #ff7569;
+    -fx-border-radius: 30;
 
 }
