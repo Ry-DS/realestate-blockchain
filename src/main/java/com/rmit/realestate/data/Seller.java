@@ -4,15 +4,13 @@ import java.io.File;
 
 public class Seller {
     private final String propertyAddress;
-    private final String ownerVendorFirstName;
-    private final String ownerVendorLastName;
+    private final String ownerVendorName;
     private final File buildingDesign;
-    private final String licenseNumber; // Changed int to String
+    private final String licenseNumber;
 
-    public Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, String licenseNumber) {// Changed int to String
+    public Seller(String propertyAddress, String ownerVendorName, File buildingDesign, String licenseNumber) {
         this.propertyAddress = propertyAddress;
-        this.ownerVendorFirstName = ownerVendorFirstName;
-        this.ownerVendorLastName = ownerVendorLastName;
+        this.ownerVendorName = ownerVendorName;
         this.buildingDesign = buildingDesign;
         this.licenseNumber = licenseNumber;
 
@@ -22,12 +20,8 @@ public class Seller {
         return propertyAddress;
     }
 
-    public String getOwnerVendorFirstName() {
-        return ownerVendorFirstName;
-    }
-
-    public String getOwnerVendorLastName() {
-        return ownerVendorLastName;
+    public String getOwnerVendorName() {
+        return ownerVendorName;
     }
 
     public File getBuildingDesign() {
@@ -36,7 +30,7 @@ public class Seller {
 
     public String getLicenseNumber() {
         return licenseNumber;
-    } // Changed int to String
+    }
 
 
 

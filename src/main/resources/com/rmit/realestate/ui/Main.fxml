@@ -22,7 +22,7 @@
             <Button layoutX="471.0" layoutY="214.0" mnemonicParsing="false" onAction="#Bank" prefHeight="143.0" prefWidth="160.0" styleClass="bank" stylesheets="@styles.css" text="Bank" />
             <Button layoutX="679.0" layoutY="214.0" mnemonicParsing="false" onAction="#Authority" prefHeight="143.0" prefWidth="160.0" styleClass="authority" stylesheets="@styles.css" text="Authority" />
             <Button layoutX="776.0" layoutY="27.0" mnemonicParsing="false" onAction="#Login" prefHeight="28.0" prefWidth="90.0" text="Login" />
-            <Label layoutX="192.0" layoutY="66.0" text="Secutity in IT Computing Systems Assignment 2 - Blockchain">
+            <Label layoutX="192.0" layoutY="66.0" text="Security in IT Computing Systems Assignment 2 - Blockchain">
                <font>
                   <Font size="19.0" />
                </font>

@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class AuthorityController {
 
@@ -20,22 +21,19 @@ public class AuthorityController {
     Label message;
 
     @FXML
-    TableView<Seller> authorityTable;
+    TableView<List> authorityTable;  // For Table
 
     @FXML
-    private TableColumn<Seller, String> addressTable;
+    private TableColumn<Seller, String> addressTable; // For Table
 
     @FXML
-    private TableColumn<Seller, String> ownerTable;
+    private TableColumn<Seller, String> ownerTable; // For Table
 
-//    Seller seller = new Seller("House", "Gerald", "Gerald", null, "L001" );
     ObservableList<String> list = FXCollections.observableArrayList("House 1","House 2");
-//    ObservableList<String> list1 = (ObservableList<String>) seller;
 
     public void initialize(){
-        Seller seller = new Seller("House", "Gerald", "Gerald", null, "L001" );
         addressProperty.setItems(list);
-        authorityTable.getItems().add(seller);
+        authorityTable.getItems().add(list); // For Table
     }
 
     public void close() {

@@ -51,11 +51,6 @@ public class BuyerController {
     public void submit(){
         String fullName1 = fullName.getText();
         String dob1 = dob.getText();
-//        try {
-//            Date dob1 = new SimpleDateFormat("dd/MM/yyyy").parse(dob.getText());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         String currentAddress1 = currentAddress.getText();
         String contactNumber1 = contactNumber.getText();
         String employerName1 = employerName.getText();

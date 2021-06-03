@@ -3,6 +3,7 @@ package com.rmit.realestate.ui;
 import com.rmit.realestate.data.Seller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,10 +25,6 @@ public class SellerController {
     TextField license_number_field;
     @FXML
     Label permitId;
-
-    @FXML
-    public TableView<Seller> authorityTable;
-
     @FXML
     File selectedFile;
 
@@ -67,11 +64,6 @@ public class SellerController {
             permitId.setText("Permit Application Id: " + "00001");
             return;
         }
-
-
-        Seller seller = new Seller(propertyAddress, owner, owner, selectedFile, license);
-        authorityTable.getItems().add(seller);
-
     }
 
     public void upload() {
