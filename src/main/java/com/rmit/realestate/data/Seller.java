@@ -7,9 +7,9 @@ public class Seller {
     private final String ownerVendorFirstName;
     private final String ownerVendorLastName;
     private final File buildingDesign;
-    private final int licenseNumber;
+    private final String licenseNumber; // Changed int to String
 
-    public Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, int licenseNumber) {
+    public Seller(String propertyAddress, String ownerVendorFirstName, String ownerVendorLastName, File buildingDesign, String licenseNumber) {// Changed int to String
         this.propertyAddress = propertyAddress;
         this.ownerVendorFirstName = ownerVendorFirstName;
         this.ownerVendorLastName = ownerVendorLastName;
@@ -34,9 +34,9 @@ public class Seller {
         return buildingDesign;
     }
 
-    public int getLicenseNumber() {
+    public String getLicenseNumber() {
         return licenseNumber;
-    }
+    } // Changed int to String
 
 
 

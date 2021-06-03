@@ -1,11 +1,9 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.data.Seller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -23,9 +21,12 @@ public class SellerController {
     @FXML
     Button building_design_button;
     @FXML
-    TextField licence_number_field;
+    TextField license_number_field;
     @FXML
     Label permitId;
+
+    @FXML
+    public TableView<Seller> authorityTable;
 
     @FXML
     File selectedFile;
@@ -35,7 +36,7 @@ public class SellerController {
 
         String propertyAddress = property_address_field.getText();
         String owner = owner_vendor_name_field.getText();
-        String licence = licence_number_field.getText();
+        String license = license_number_field.getText();
 
 //        System.out.println("awd"+propertyAddress.length());
 //        System.out.println("zbcde".charAt(0));
@@ -51,7 +52,7 @@ public class SellerController {
             permitId.setText("Owner/Vendor not given");
             return;
         }
-        if (licence == null || licence.isBlank()) {
+        if (license == null || license.isBlank()) {
             permitId.setTextFill(Color.RED);
             permitId.setText("Licence Number not given");
             return;
@@ -61,14 +62,15 @@ public class SellerController {
             permitId.setText("No File Selected");
             return;
         }
-        if (propertyAddress != null && owner != null && licence != null && selectedFile != null){
+        if (propertyAddress != null && owner != null && license != null && selectedFile != null){
             permitId.setTextFill(Color.BLACK);
             permitId.setText("Permit Application Id: " + "00001");
             return;
         }
 
-        // Seller seller=new Seller(propertyAddress, );
 
+        Seller seller = new Seller(propertyAddress, owner, owner, selectedFile, license);
+        authorityTable.getItems().add(seller);
 
     }
 
@@ -88,7 +90,7 @@ public class SellerController {
     public void clear() {
         property_address_field.clear();
         owner_vendor_name_field.clear();
-        licence_number_field.clear();
+        license_number_field.clear();
         selectedFile = null;
         building_design_button.setText("Choose File");
         permitId.setText("");

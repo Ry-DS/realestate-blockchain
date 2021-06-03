@@ -14,29 +14,29 @@
    <right>
       <AnchorPane prefHeight="515.0" prefWidth="556.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="62.0" fitWidth="68.0" layoutX="248.0" layoutY="103.0" pickOnBounds="true">
+            <ImageView fitHeight="62.0" fitWidth="68.0" layoutX="248.0" layoutY="83.0" pickOnBounds="true">
                <image>
                   <Image url="@lock.png" />
                </image>
             </ImageView>
-            <Label layoutX="158.0" layoutY="213.0" text="Username:">
+            <Label layoutX="158.0" layoutY="203.0" text="Username:">
                <font>
                   <Font name="Agency FB" size="23.0" />
                </font>
             </Label>
-            <Label layoutX="159.0" layoutY="265.0" text="Password:">
+            <Label layoutX="159.0" layoutY="255.0" text="Password:">
                <font>
                   <Font name="Agency FB" size="23.0" />
                </font>
             </Label>
-            <TextField id="userName" fx:id="userName" layoutX="241.0" layoutY="215.0" />
-            <PasswordField id="password" fx:id="password" layoutX="241.0" layoutY="268.0" />
-            <Button id="login" layoutX="160.0" layoutY="333.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="235.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
+            <TextField id="userName" fx:id="userName" layoutX="241.0" layoutY="205.0" />
+            <PasswordField id="password" fx:id="password" layoutX="241.0" layoutY="258.0" />
+            <Button id="login" layoutX="160.0" layoutY="338.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="235.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button id="cancel" cancelButton="true" layoutX="160.0" layoutY="382.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="237.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
+            <Button id="cancel" cancelButton="true" layoutX="160.0" layoutY="387.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="237.0" styleClass="cancel1" stylesheets="@styles.css" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -46,6 +46,11 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <Label fx:id="message" alignment="CENTER" contentDisplay="CENTER" layoutX="163.0" layoutY="298.0" prefHeight="30.0" prefWidth="229.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </right>

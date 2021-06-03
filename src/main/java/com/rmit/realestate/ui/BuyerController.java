@@ -39,7 +39,7 @@ public class BuyerController {
     Label loanId;
 
 //    @FXML
-//    Color Error = new Color(10,10,255);
+//    Color Error = new Color.web("#ffffff"); // Not sure Why web error comes up cannot resolve symbol
 
     ObservableList<String> list = FXCollections.observableArrayList("House 1","House 2");
 

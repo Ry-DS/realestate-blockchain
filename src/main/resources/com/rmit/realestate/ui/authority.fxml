@@ -57,11 +57,11 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TableView layoutX="155.0" layoutY="148.0" prefHeight="210.0" prefWidth="570.0" tableMenuButtonVisible="true">
+            <TableView fx:id="authorityTable" layoutX="155.0" layoutY="148.0" prefHeight="210.0" prefWidth="570.0" tableMenuButtonVisible="true">
                <columns>
-                  <TableColumn editable="false" prefWidth="282.39996337890625" sortable="false" text="Property Address" />
+                  <TableColumn fx:id="addressTable" editable="false" prefWidth="282.39996337890625" sortable="false" text="Property Address" />
                   <TableColumn editable="false" minWidth="4.0" prefWidth="84.80001831054688" sortable="false" />
-                  <TableColumn editable="false" prefWidth="212.7999267578125" sortable="false" text="Owner/Vendor" />
+                  <TableColumn fx:id="ownerTable" editable="false" prefWidth="212.7999267578125" sortable="false" text="Owner/Vendor" />
                </columns>
             </TableView>
             <Button id="cancel" cancelButton="true" layoutX="408.0" layoutY="469.0" mnemonicParsing="false" onAction="#cancel" prefHeight="20.0" prefWidth="77.0" styleClass="cancel" stylesheets="@styles.css" text="Cancel">

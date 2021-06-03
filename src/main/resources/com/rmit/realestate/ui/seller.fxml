@@ -37,7 +37,7 @@
          <font>
             <Font size="16.0" />
          </font></Text>
-        <TextField id="licence_number_field" fx:id="licence_number_field" layoutX="425.0" layoutY="272.0" prefHeight="26.0" prefWidth="210.0" promptText="L001" />
+        <TextField id="licence_number_field" fx:id="license_number_field" layoutX="425.0" layoutY="272.0" prefHeight="26.0" prefWidth="210.0" promptText="L001" />
         <Label fx:id="permitId" alignment="CENTER" contentDisplay="CENTER" layoutX="226.0" layoutY="394.0" prefHeight="26.0" prefWidth="451.0" textAlignment="CENTER" textFill="#ff1c1c">
          <font>
             <Font name="System Bold" size="17.0" />

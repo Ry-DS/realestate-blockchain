@@ -1,5 +1,6 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.data.Seller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,10 +19,23 @@ public class AuthorityController {
     @FXML
     Label message;
 
+    @FXML
+    TableView<Seller> authorityTable;
+
+    @FXML
+    private TableColumn<Seller, String> addressTable;
+
+    @FXML
+    private TableColumn<Seller, String> ownerTable;
+
+//    Seller seller = new Seller("House", "Gerald", "Gerald", null, "L001" );
     ObservableList<String> list = FXCollections.observableArrayList("House 1","House 2");
+//    ObservableList<String> list1 = (ObservableList<String>) seller;
 
     public void initialize(){
+        Seller seller = new Seller("House", "Gerald", "Gerald", null, "L001" );
         addressProperty.setItems(list);
+        authorityTable.getItems().add(seller);
     }
 
     public void close() {
