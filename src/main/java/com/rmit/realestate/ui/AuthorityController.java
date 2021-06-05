@@ -10,9 +10,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class AuthorityController {
@@ -23,7 +25,7 @@ public class AuthorityController {
     Label message;
 
     @FXML
-    TableView<List> authorityTable;  // For Table
+    TableView<Seller> authorityTable;  // For Table
 
     @FXML
     private TableColumn<Seller, String> addressTable; // For Table
@@ -35,7 +37,11 @@ public class AuthorityController {
 
     public void initialize(){
         addressProperty.setItems(list);
-        authorityTable.getItems().add(list); // For Table
+
+        authorityTable.getItems().add(null); // For Table
+        addressTable.setCellValueFactory(new PropertyValueFactory<>("address"));
+        ownerTable.setCellValueFactory(new PropertyValueFactory<>("owner"));
+
     }
 
     public void close() {
@@ -66,7 +72,11 @@ public class AuthorityController {
 
         if (addressProperty1 != null){
             message.setTextFill(Color.GREEN);
-            message.setText("Property has been approved");
+            message.setText(addressProperty1 + " has been accepted");
+
+            addressTable.setText((addressProperty1));
+            Seller seller = new Seller(addressProperty.getValue(), null, null, null);
+            authorityTable.getItems().add(seller);
         }
     }
 
@@ -78,7 +88,7 @@ public class AuthorityController {
 
         if (addressProperty1 != null){
             message.setTextFill(Color.GREEN);
-            message.setText("Property has been declined");
+            message.setText(addressProperty1 + " has been declined");
         }
     }
 

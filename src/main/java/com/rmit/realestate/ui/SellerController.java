@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class SellerController {
     @FXML
@@ -25,7 +26,6 @@ public class SellerController {
     Label permitId;
     @FXML
     File selectedFile;
-
 
     public void submit() {
 
@@ -58,14 +58,13 @@ public class SellerController {
             permitId.setText("Permit Application Id: " + "00001");
             return;
         }
+
     }
 
     public void upload() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
-        );
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
         selectedFile = fileChooser.showOpenDialog(App.stage);
         if (selectedFile != null) {
             building_design_button.setText(selectedFile.getName());

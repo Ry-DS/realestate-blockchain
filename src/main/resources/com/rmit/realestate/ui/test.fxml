@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.realestate.ui.testController">
+   <children>
+      <TableView fx:id="table" layoutX="61.0" layoutY="43.0" prefHeight="248.0" prefWidth="478.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="quantity" prefWidth="75.0" text="Quantity" />
+        </columns>
+      </TableView>
+      <Button layoutX="380.0" layoutY="331.0" mnemonicParsing="false" onAction="#add" text="Add" />
+      <TextField fx:id="content" layoutX="196.0" layoutY="331.0" />
+   </children>
+</AnchorPane>

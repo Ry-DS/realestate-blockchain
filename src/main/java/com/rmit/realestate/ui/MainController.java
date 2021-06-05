@@ -34,4 +34,9 @@ public class MainController {
     private void close() {
         System.exit(0);
     }
+
+
+    public void test() throws IOException{
+        App.setRoot("test");
+    }
 }
