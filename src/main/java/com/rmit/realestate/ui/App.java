@@ -1,8 +1,8 @@
 package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.PeerConnectionManager;
+import com.rmit.realestate.blockchain.SecurityEntity;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +25,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Security.addProvider(new BouncyCastleProvider());
+        SecurityEntity.load();
         peerConnectionManager = new PeerConnectionManager();
         scene = new Scene(loadFXML("Main"));
         stage.setScene(scene);

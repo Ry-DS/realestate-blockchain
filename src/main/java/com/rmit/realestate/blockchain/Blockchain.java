@@ -23,20 +23,19 @@ public class Blockchain {
                 System.err.println("Previous hash doesn't match current block " + i);
                 return false;
             }
-            // Check if signatures are correct: Proof of Authority
-            
-            // if not signed by authority
-            // if not signed by publisher
 
+            // Check if signatures are correct: Proof of Authority
+            // if not signed by admin or owner of block
+            if (!currentBlock.verifySignatures())
+                return false;
             if (!currentBlock.getData().verify(this)) {
                 return false;
             }
 
 
         }
-
-        return false; // This was missing when pulled from github, I have added this please make sure it was required.
-                      // Without The app doesn't run and error comes up
+        // All checks passed
+        return true;
     }
 
     public Collection<Block<Verifiable>> getBlocks() {

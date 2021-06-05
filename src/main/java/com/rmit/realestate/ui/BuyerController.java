@@ -1,6 +1,5 @@
 package com.rmit.realestate.ui;
 
-import com.rmit.realestate.data.Buyer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 
 public class BuyerController {
@@ -38,24 +32,24 @@ public class BuyerController {
     @FXML
     Label loanId;
 
-//    @FXML
-//    Color Error = new Color.web("#ffffff"); // Not sure Why web error comes up cannot resolve symbol
+    // TODO decide if we still need this.
+    private final Color error = Color.web("#ffffff"); // Not sure Why web error comes up cannot resolve symbol
 
-    ObservableList<String> list = FXCollections.observableArrayList("House 1","House 2");
+    ObservableList<String> list = FXCollections.observableArrayList("House 1", "House 2");
 
-    public void initialize(){
+    public void initialize() {
         addressProperty.setItems(list);
     }
 
     @FXML
-    public void submit(){
+    public void submit() {
         String fullName1 = fullName.getText();
         String dob1 = dob.getText();
         String currentAddress1 = currentAddress.getText();
         String contactNumber1 = contactNumber.getText();
         String employerName1 = employerName.getText();
         String loanAmount1 = loanAmount.getText();
-        String addressProperty1 = (String) addressProperty.getValue();
+        String addressProperty1 = addressProperty.getValue();
 
         if (fullName1 == null || fullName1.isBlank()) {
             loanId.setTextFill(Color.RED);
@@ -92,12 +86,10 @@ public class BuyerController {
             loanId.setText("Loan Amount not given");
             return;
         }
-        if (fullName1 != null && dob1 != null && currentAddress1 != null && contactNumber1 != null && employerName1 != null && loanAmount1 != null && addressProperty1 != null){
-            loanId.setTextFill(Color.BLACK);
-            loanId.setText("Loan Application Id: " + "00001");
-            return;
-        }
-
+        // at this point, all fields are filled, safe to give id.
+        loanId.setTextFill(Color.BLACK);
+        loanId.setText("Loan Application Id: " + "00001");
+// TODO make buyer object
 //        try {
 //            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(dob.getText());
 //            Buyer buyer = new Buyer(fullName.getText(), date1, currentAddress.getText(), contactNumber.getText(), employerName.getText(),
@@ -107,12 +99,12 @@ public class BuyerController {
 //        }
     }
 
-    public void close(ActionEvent event){
+    public void close(ActionEvent event) {
         Platform.exit();
         System.exit(0);
     }
 
-    public void clear(ActionEvent event){
+    public void clear(ActionEvent event) {
         fullName.clear();
         dob.clear();
         currentAddress.clear();

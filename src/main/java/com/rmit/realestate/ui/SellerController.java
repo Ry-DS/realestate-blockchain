@@ -1,19 +1,16 @@
 package com.rmit.realestate.ui;
 
-import com.rmit.realestate.data.Seller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
 public class SellerController {
     @FXML
@@ -29,15 +26,12 @@ public class SellerController {
     @FXML
     File selectedFile;
 
+
     public void submit() {
 
         String propertyAddress = property_address_field.getText();
         String owner = owner_vendor_name_field.getText();
         String license = license_number_field.getText();
-
-//        System.out.println("awd"+propertyAddress.length());
-//        System.out.println("zbcde".charAt(0));
-//        System.out.println("zbcde".substring(1));
 
         if (propertyAddress == null || propertyAddress.isBlank()) {
             permitId.setTextFill(Color.RED);
@@ -64,13 +58,14 @@ public class SellerController {
             permitId.setText("Permit Application Id: " + "00001");
             return;
         }
-
     }
 
     public void upload() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+        );
         selectedFile = fileChooser.showOpenDialog(App.stage);
         if (selectedFile != null) {
             building_design_button.setText(selectedFile.getName());
