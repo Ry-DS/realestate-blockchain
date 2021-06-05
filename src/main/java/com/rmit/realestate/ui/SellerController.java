@@ -1,5 +1,7 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.data.Seller;
+import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -53,11 +55,11 @@ public class SellerController {
             permitId.setText("No File Selected");
             return;
         }
-        if (propertyAddress != null && owner != null && license != null && selectedFile != null){
-            permitId.setTextFill(Color.BLACK);
-            permitId.setText("Permit Application Id: " + "00001");
-            return;
-        }
+        // successful
+        permitId.setTextFill(Color.BLACK);
+        Seller seller=new Seller(propertyAddress, owner, selectedFile);
+        int id = SellerDao.addSeller(seller);
+        permitId.setText("Permit Application Id: " + id);
 
     }
 

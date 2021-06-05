@@ -1,6 +1,7 @@
 package com.rmit.realestate.ui;
 
 import com.rmit.realestate.data.Seller;
+import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +21,7 @@ import java.util.List;
 public class AuthorityController {
 
     @FXML
-    ComboBox<String> addressProperty;
+    ComboBox<Seller> addressProperty;
     @FXML
     Label message;
 
@@ -33,14 +34,14 @@ public class AuthorityController {
     @FXML
     private TableColumn<Seller, String> ownerTable; // For Table
 
-    ObservableList<String> list = FXCollections.observableArrayList("House 1","House 2");
+    ObservableList<Seller> list = FXCollections.observableList(SellerDao.getSellers());
 
-    public void initialize(){
+    public void initialize() {
         addressProperty.setItems(list);
 
-        authorityTable.getItems().add(null); // For Table
-        addressTable.setCellValueFactory(new PropertyValueFactory<>("address"));
-        ownerTable.setCellValueFactory(new PropertyValueFactory<>("owner"));
+        authorityTable.setItems(list);
+        addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
+        ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
 
     }
 
@@ -60,33 +61,34 @@ public class AuthorityController {
     }
 
 
-    public void cancel() throws IOException{
+    public void cancel() throws IOException {
         App.setRoot("Main");
     }
 
-    public void accept(){
-        String addressProperty1 = addressProperty.getValue();
-        if (addressProperty1 == null || addressProperty1.isBlank()){
+    public void accept() {
+        Seller seller = addressProperty.getValue();
+        String addressProperty = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
+
+        if (addressProperty == null || addressProperty.isBlank()) {
             message.setText("Please Select a Property");
-        }
-
-        if (addressProperty1 != null){
+        } else {
             message.setTextFill(Color.GREEN);
-            message.setText(addressProperty1 + " has been accepted");
+            message.setText(addressProperty + " has been accepted");
 
-            addressTable.setText((addressProperty1));
-            Seller seller = new Seller(addressProperty.getValue(), null, null, null);
-            authorityTable.getItems().add(seller);
+            addressTable.setText((addressProperty));
+
+            SellerDao.approve(seller);
+
         }
     }
 
-    public void decline(){
-        String addressProperty1 = addressProperty.getValue();
-        if (addressProperty1 == null || addressProperty1.isBlank()){
+    public void decline() {
+        String addressProperty1 = addressProperty.getValue().getPropertyAddress();
+        if (addressProperty1 == null || addressProperty1.isBlank()) {
             message.setText("Please Select a Property");
         }
 
-        if (addressProperty1 != null){
+        if (addressProperty1 != null) {
             message.setTextFill(Color.GREEN);
             message.setText(addressProperty1 + " has been declined");
         }
