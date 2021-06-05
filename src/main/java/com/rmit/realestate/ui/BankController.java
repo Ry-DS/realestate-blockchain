@@ -56,7 +56,7 @@ public class BankController {
 
         if (addressProperty1 != null){
             message.setTextFill(Color.GREEN);
-            message.setText("Property has been approved");
+            message.setText(addressProperty1 + " has been accepted");
         }
     }
 
@@ -68,7 +68,7 @@ public class BankController {
 
         if (addressProperty1 != null){
             message.setTextFill(Color.GREEN);
-            message.setText("Property has been declined");
+            message.setText(addressProperty1 + " has been declined");
         }
     }
 }
