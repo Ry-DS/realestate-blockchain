@@ -74,7 +74,7 @@ public class AuthorityController {
 
             addressTable.setText((addressProperty1));
             Seller seller = new Seller(addressProperty.getValue(), null, null, null);
-            authorityTable.getItems().add(seller);
+            authorityTable.getItems().add(seller); 
         }
     }
 
