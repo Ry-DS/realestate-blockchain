@@ -1,5 +1,6 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.PeerConnectionManager;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import javafx.application.Application;
@@ -21,6 +22,8 @@ public class App extends Application {
     public static Scene scene;
     public static Stage stage;
     public static PeerConnectionManager peerConnectionManager;
+    // TODO get from network
+    public static final Blockchain blockchain = new Blockchain();
 
     @Override
     public void start(Stage stage) throws IOException {

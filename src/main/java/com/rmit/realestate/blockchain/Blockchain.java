@@ -6,7 +6,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Blockchain {
-    private final List<Block<Verifiable>> blocks = new ArrayList<>();
+    private final List<Block<Verifiable>> blocks;
+
+    public Blockchain(List<Block<Verifiable>> blocks) {
+        this.blocks = blocks;
+    }
+
+    public Blockchain() {
+        this(new ArrayList<>());
+    }
 
     public boolean verify() {
         for (int i = 1; i < blocks.size(); i++) {
@@ -35,6 +43,20 @@ public class Blockchain {
         }
         // All checks passed
         return true;
+    }
+
+    /**
+     * Attempts to publish this block to the blockchain, sending it to the network to be verified.
+     *
+     * @return true if successful, false otherwise
+     */
+    public boolean publishBlock(Verifiable data, SecurityEntity creator) throws Exception {
+        Block<Verifiable> block = new Block<>(data, creator, blocks.get(blocks.size() - 1).getHash());
+        Blockchain tempBlockchain = new Blockchain(blocks);
+        tempBlockchain.blocks.add(block);
+        return data.verify(tempBlockchain);
+        // Ready to send to network for authority to sign.
+        // TODO send
     }
 
     public Collection<Block<Verifiable>> getBlocks() {
