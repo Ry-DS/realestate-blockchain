@@ -29,6 +29,8 @@ public class SellerController {
     @FXML
     File selectedFile;
 
+    private final Color error = Color.web("#ff1c1c");
+
     public void submit() {
 
         String propertyAddress = property_address_field.getText();
@@ -36,30 +38,31 @@ public class SellerController {
         String license = license_number_field.getText();
 
         if (propertyAddress == null || propertyAddress.isBlank()) {
-            permitId.setTextFill(Color.RED);
+            permitId.setTextFill(error);
             permitId.setText("Address not given");
             return;
         }
         if (owner == null || owner.isBlank()) {
-            permitId.setTextFill(Color.RED);
+            permitId.setTextFill(error);
             permitId.setText("Owner/Vendor not given");
             return;
         }
         if (license == null || license.isBlank()) {
-            permitId.setTextFill(Color.RED);
+            permitId.setTextFill(error);
             permitId.setText("Licence Number not given");
             return;
         }
         if (selectedFile == null) {
-            permitId.setTextFill(Color.RED);
+            permitId.setTextFill(error);
             permitId.setText("No File Selected");
             return;
         }
         // successful
-        permitId.setTextFill(Color.BLACK);
+        permitId.setTextFill(Color.GREEN);
         Seller seller=new Seller(propertyAddress, owner, selectedFile);
         int id = SellerDao.addSeller(seller);
-        permitId.setText("Permit Application Id: " + id);
+        permitId.setText("Submitted - "+"Permit Application Id: " + id);
+        clear1();
 
     }
 
@@ -81,6 +84,13 @@ public class SellerController {
         selectedFile = null;
         building_design_button.setText("Choose File");
         permitId.setText("");
+    }
+    public void clear1() {
+        property_address_field.clear();
+        owner_vendor_name_field.clear();
+        license_number_field.clear();
+        selectedFile = null;
+        building_design_button.setText("Choose File");
     }
 
     @FXML

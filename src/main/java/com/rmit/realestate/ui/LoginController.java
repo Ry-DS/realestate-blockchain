@@ -28,6 +28,14 @@ public class LoginController {
         String password1 = password.getText();
         if (username.equals("admin") && password1.equals("pass")) {
             App.setRoot("Main");
+        } else if (username.equals("seller") && password1.equals("pass")) {
+            App.setRoot("seller");
+        } else if (username.equals("buyer") && password1.equals("pass")) {
+            App.setRoot("BuyerForm");
+        } else if (username.equals("authority") && password1.equals("pass")) {
+            App.setRoot("authority");
+        } else if (username.equals("bank") && password1.equals("pass")) {
+            App.setRoot("bank");
         } else {
             message.setText("Wrong Info Provided");
         }

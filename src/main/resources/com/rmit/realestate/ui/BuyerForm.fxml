@@ -122,16 +122,15 @@
                </image>
             </ImageView>
             <ComboBox fx:id="addressProperty" layoutX="209.0" layoutY="324.0" prefWidth="150.0" promptText="Select a Property" />
-            <TableView layoutX="435.0" layoutY="159.0" prefHeight="219.0" prefWidth="410.0" tableMenuButtonVisible="true">
+            <TableView fx:id="authorityTable" layoutX="435.0" layoutY="159.0" prefHeight="219.0" prefWidth="410.0" tableMenuButtonVisible="true">
                <columns>
-                  <TableColumn prefWidth="214.39993286132812" text="Property Address" />
-                  <TableColumn minWidth="4.0" prefWidth="40.0" />
-                  <TableColumn prefWidth="157.5999755859375" text="Owner/Vendor" />
+                  <TableColumn fx:id="addressTable" prefWidth="214.39993286132812" text="Property Address" />
+                  <TableColumn fx:id="ownerTable" prefWidth="172.7999267578125" text="Owner/Vendor" />
                </columns>
             </TableView>
             <Label id="LoanID" fx:id="loanId" alignment="CENTER" contentDisplay="CENTER" layoutX="435.0" layoutY="397.0" prefHeight="30.0" prefWidth="410.0" textFill="#ff1c1c">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <Button layoutX="814.0" layoutY="451.0" mnemonicParsing="false" onAction="#close" prefHeight="26.0" prefWidth="66.0" styleClass="quit" stylesheets="@styles.css" text="Quit">

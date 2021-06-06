@@ -15,8 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 public class AuthorityController {
 
@@ -34,7 +32,11 @@ public class AuthorityController {
     @FXML
     private TableColumn<Seller, String> ownerTable; // For Table
 
+    @FXML
+    private TableColumn<Seller, String> pid; // For Table
+
     ObservableList<Seller> list = FXCollections.observableList(SellerDao.getSellers());
+
 
     public void initialize() {
         addressProperty.setItems(list);
@@ -42,6 +44,7 @@ public class AuthorityController {
         authorityTable.setItems(list);
         addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
         ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
+        pid.setCellValueFactory(new PropertyValueFactory<>("")); //TODO ADD The Permit ID to TABLE AS WELL, The One Assigned after submission of Seller FORM
 
     }
 
@@ -70,27 +73,32 @@ public class AuthorityController {
         String addressProperty = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
 
         if (addressProperty == null || addressProperty.isBlank()) {
+            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
         } else {
             message.setTextFill(Color.GREEN);
-            message.setText(addressProperty + " has been accepted");
-
-            addressTable.setText((addressProperty));
-
+            message.setText(seller.getOwnerVendorName() + "'s property has been accepted for sale");
+            authorityTable.refresh();
+            this.addressProperty.getSelectionModel().clearSelection();
             SellerDao.approve(seller);
 
         }
     }
 
     public void decline() {
-        String addressProperty1 = addressProperty.getValue().getPropertyAddress();
-        if (addressProperty1 == null || addressProperty1.isBlank()) {
+        Seller seller = addressProperty.getValue();
+        String addressProperty = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
+        if (addressProperty == null || addressProperty.isBlank()) {
+            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
         }
 
-        if (addressProperty1 != null) {
+        if (addressProperty != null) {
             message.setTextFill(Color.GREEN);
-            message.setText(addressProperty1 + " has been declined");
+            message.setText(seller.getOwnerVendorName() + "'s property has been declined for sale");
+            authorityTable.refresh();
+            this.addressProperty.getSelectionModel().clearSelection();
+            SellerDao.disapprove(seller);
         }
     }
 

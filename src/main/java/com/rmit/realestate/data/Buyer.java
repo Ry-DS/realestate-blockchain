@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class Buyer {
     private final String fullName;
-    private final Date dob;
+    private final String dob; // TODO Change String dob back to Date dob, Wasn't sure how to make Date dob in BuyerController for Form so I changed this Temporary for you to fix
     private final String currentAddress;
     private final String contactNumber;
     private final String employerName;
-    private final int loanAmount;
+    private int loanAmount;
     private final String propertyAddress;
 
-    public Buyer(String fullName, Date dob, String currentAddress, String contactNumber, String employerName, int loanAmount, String propertyAddress) {
+    // TODO Change String dob back to Date dob in Constructor Parameter
+    public Buyer(String fullName, String dob, String currentAddress, String contactNumber, String employerName, String propertyAddress) {
         this.fullName = fullName;
         this.dob = dob;
         this.currentAddress = currentAddress;
         this.contactNumber = contactNumber;
         this.employerName = employerName;
-        this.loanAmount = loanAmount;
         this.propertyAddress = propertyAddress;
     }
 
@@ -25,7 +25,8 @@ public class Buyer {
         return fullName;
     }
 
-    public Date getDob() {
+    // TODO Change String dob back to Date dob
+    public String getDob() {
         return dob;
     }
 
@@ -41,11 +42,19 @@ public class Buyer {
         return employerName;
     }
 
-    public int getLoanAmount() {
-        return loanAmount;
+
+    public void setLoanAmount(int loanAmount) {
+        this.loanAmount = loanAmount;
     }
 
     public String getPropertyAddress() {
         return propertyAddress;
     }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
+
+
 }

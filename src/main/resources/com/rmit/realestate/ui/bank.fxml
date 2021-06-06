@@ -52,15 +52,16 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TableView layoutX="77.0" layoutY="141.0" prefHeight="237.0" prefWidth="744.0" tableMenuButtonVisible="true">
+            <TableView fx:id="bankTable" layoutX="43.0" layoutY="139.0" prefHeight="240.0" prefWidth="808.0" tableMenuButtonVisible="true">
                <columns>
-                  <TableColumn editable="false" prefWidth="104.00000762939453" sortable="false" text="Fullname" />
-                  <TableColumn editable="false" minWidth="4.0" prefWidth="96.0" sortable="false" text="Date of Birth" />
-                  <TableColumn editable="false" prefWidth="119.199951171875" sortable="false" text="Current Address" />
-                  <TableColumn editable="false" prefWidth="104.79998779296875" sortable="false" text="Contact Number" />
-                  <TableColumn editable="false" prefWidth="106.39999389648438" sortable="false" text="Employer Name" />
-                  <TableColumn editable="false" prefWidth="112.0" sortable="false" text="Selected Property " />
-                  <TableColumn editable="false" prefWidth="87.2000732421875" sortable="false" text="Loan Amount" />
+                  <TableColumn fx:id="fullName" editable="false" prefWidth="92.00000762939453" sortable="false" text="Fullname" />
+                  <TableColumn fx:id="DOB" editable="false" minWidth="4.0" prefWidth="88.79998779296875" sortable="false" text="Date of Birth" />
+                  <TableColumn fx:id="currentAddress" editable="false" prefWidth="120.00006103515625" sortable="false" text="Current Address" />
+                  <TableColumn fx:id="contactNumber" editable="false" prefWidth="107.199951171875" sortable="false" text="Contact Number" />
+                  <TableColumn fx:id="employerName" editable="false" prefWidth="102.39993286132812" sortable="false" text="Employer Name" />
+                  <TableColumn fx:id="selectedProperty" editable="false" prefWidth="136.0" sortable="false" text="Selected Property " />
+                  <TableColumn fx:id="loanAmount" editable="false" prefWidth="85.60003662109375" sortable="false" text="Loan Amount" />
+                  <TableColumn fx:id="lid" prefWidth="60.0" text="Loan ID" />
                </columns>
             </TableView>
             <Button id="cancel" cancelButton="true" layoutX="410.0" layoutY="470.0" mnemonicParsing="false" onAction="#cancel" prefHeight="20.0" prefWidth="77.0" styleClass="cancel" stylesheets="@styles.css" text="Cancel">
@@ -68,7 +69,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <ComboBox fx:id="addressProperty" layoutX="175.0" layoutY="395.0" prefHeight="30.0" prefWidth="244.0" promptText="Select a Property" />
+            <ComboBox fx:id="addressProperty" layoutX="175.0" layoutY="395.0" prefHeight="30.0" prefWidth="244.0" promptText="Select a Person" />
             <Button layoutX="463.0" layoutY="395.0" mnemonicParsing="false" onAction="#decline" prefHeight="26.0" prefWidth="104.0" styleClass="decline" stylesheets="@styles.css" text="Decline" />
             <Button layoutX="593.0" layoutY="395.0" mnemonicParsing="false" onAction="#accept" prefHeight="26.0" prefWidth="104.0" style="-fx-background-radius: 5;" styleClass="accept" stylesheets="@styles.css" text="Accept" />
             <ImageView fitHeight="96.0" fitWidth="78.0" layoutX="593.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
