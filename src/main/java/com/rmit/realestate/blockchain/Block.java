@@ -1,5 +1,7 @@
 package com.rmit.realestate.blockchain;
 
+import java.util.Date;
+
 public class Block<T> {
     private final T data;
     private final SecurityEntity creator;
@@ -9,14 +11,16 @@ public class Block<T> {
     private final String prevHash;
     private final long timestamp;
 
-    public Block(T data, SecurityEntity creator, String hash, String signedHashByAdmin, String signedHashByCreator, String prevHash, long timestamp) {
+    public Block(T data, SecurityEntity creator, String prevHash) throws Exception {
         this.data = data;
         this.creator = creator;
-        this.hash = hash;
-        this.signedHashByAdmin = signedHashByAdmin;
-        this.signedHashByCreator = signedHashByCreator;
         this.prevHash = prevHash;
-        this.timestamp = timestamp;
+        this.timestamp = new Date().getTime();
+
+        this.hash = calculateHash();
+        this.signedHashByCreator = creator.sign(hash);
+        // Block needs to now be broadcasted to the network for the admin to approve.
+        this.signedHashByAdmin = null;
     }
 
     public T getData() {
@@ -35,9 +39,8 @@ public class Block<T> {
         return timestamp;
     }
 
-    // TODO implement
     public String calculateHash() {
-        return null;
+        return Hashing.hash(data.toString(), creator.getName(), prevHash, timestamp);
     }
 
     public SecurityEntity getCreator() {
@@ -56,7 +59,7 @@ public class Block<T> {
      * Verify if {@link #signedHashByAdmin} and {@link #signedHashByCreator}
      * is correct with public key.
      *
-     * @return true if verification succeeds, false othwerwise
+     * @return true if verification succeeds, false otherwise
      */
     public boolean verifySignatures() {
         try {

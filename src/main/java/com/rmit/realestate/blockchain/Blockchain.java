@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Blockchain {
-    private final List<Block<Verifiable
-            >> blocks = new ArrayList<>();
+    private final List<Block<Verifiable>> blocks = new ArrayList<>();
 
     public boolean verify() {
         for (int i = 1; i < blocks.size(); i++) {
