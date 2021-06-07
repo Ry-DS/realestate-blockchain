@@ -29,8 +29,8 @@
                   <Font name="Agency FB" size="23.0" />
                </font>
             </Label>
-            <TextField id="userName" fx:id="userName" layoutX="241.0" layoutY="205.0" />
-            <PasswordField id="password" fx:id="password" layoutX="241.0" layoutY="258.0" />
+            <TextField id="userName" fx:id="userNameField" layoutX="241.0" layoutY="205.0" />
+            <PasswordField id="password" fx:id="passwordField" layoutX="241.0" layoutY="258.0" />
             <Button id="login" layoutX="160.0" layoutY="338.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="235.0" styleClass="login" stylesheets="@styles.css" text="Login" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />

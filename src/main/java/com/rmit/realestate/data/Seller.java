@@ -12,14 +12,20 @@ public class Seller implements BlockData {
     private final String propertyAddress;
     private final String ownerVendorName;
     private final String buildingDesign;
-    private int licenseNumber=-1;
+    private final String licenceNumber;
+    private int permitId = -1;
 
-    public Seller(String propertyAddress, String ownerVendorName, File buildingDesign) {
+    public Seller(String propertyAddress, String ownerVendorName, String licenceNumber, File buildingDesign) {
         this.propertyAddress = propertyAddress;
         this.ownerVendorName = ownerVendorName;
+        this.licenceNumber = licenceNumber;
         // TODO save file properly
         this.buildingDesign = buildingDesign.getName();
 
+    }
+
+    public String getLicenceNumber() {
+        return licenceNumber;
     }
 
     public String getPropertyAddress() {
@@ -34,12 +40,12 @@ public class Seller implements BlockData {
         return buildingDesign;
     }
 
-    public int getLicenseNumber() {
-        return licenseNumber;
+    public int getPermitId() {
+        return permitId;
     }
 
-    public void setLicenseNumber(int licenseNumber) {
-        this.licenseNumber = licenseNumber;
+    public void setPermitId(int permitId) {
+        this.permitId = permitId;
     }
 
     @Override
@@ -51,13 +57,13 @@ public class Seller implements BlockData {
     public boolean verify(Blockchain blockchain, Block container) {
         // Check that only the seller made this block
         if (propertyAddress == null || ownerVendorName == null || buildingDesign == null
-                || licenseNumber < 0 || container.getCreator() != SecurityEntity.SELLER)
+                || permitId < 0 || container.getCreator() != SecurityEntity.SELLER)
             return false;
         // Check if licence number already exists on blockchain.
         for (Block block : blockchain.getBlocks()) {
             if (block.getData() instanceof Seller) {
                 Seller otherSeller = (Seller) block.getData();
-                if (otherSeller.getLicenseNumber() == licenseNumber && block != container) {
+                if (otherSeller.getPermitId() == permitId && block != container) {
                     return false;
                 }
             }
@@ -67,7 +73,7 @@ public class Seller implements BlockData {
 
     @Override
     public String hash() {
-        return Hashing.hash(propertyAddress, ownerVendorName, buildingDesign, licenseNumber);
+        return Hashing.hash(propertyAddress, ownerVendorName, buildingDesign, permitId);
     }
 }
 

@@ -48,9 +48,9 @@ public class SellerController {
             permitId.setText("Owner/Vendor not given");
             return;
         }
-        if (license == null || license.isBlank()) {
+        if (license == null || !license.matches("^L[0]+\\d$")) {
             permitId.setTextFill(error);
-            permitId.setText("Licence Number not given");
+            permitId.setText("Licence Number invalid");
             return;
         }
         if (selectedFile == null) {
@@ -60,10 +60,10 @@ public class SellerController {
         }
         // successful
 
-        Seller seller = new Seller(propertyAddress, owner, selectedFile);
+        Seller seller = new Seller(propertyAddress, owner,license, selectedFile);
         if (App.getSellerDao().addSeller(seller, OWNER)) {
             permitId.setTextFill(Color.GREEN);
-            permitId.setText("Submitted - " + "Permit Application Id: " + seller.getLicenseNumber());
+            permitId.setText("Submitted - " + "Permit Application Id: " + seller.getPermitId());
             submitClear();
         } else {
             permitId.setText("Failed to verify block on blockchain.");

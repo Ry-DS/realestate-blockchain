@@ -46,7 +46,7 @@ public class AuthorityController {
         authorityTable.setItems(list);
         addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
         ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
-        pid.setCellValueFactory(new PropertyValueFactory<>("")); //TODO ADD The Permit ID to TABLE AS WELL, The One Assigned after submission of Seller FORM
+        pid.setCellValueFactory(new PropertyValueFactory<>("permitId"));
 
     }
 

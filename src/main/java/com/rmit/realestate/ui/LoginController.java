@@ -11,9 +11,9 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML
-    TextField userName;
+    TextField userNameField;
     @FXML
-    TextField password;
+    TextField passwordField;
     @FXML
     Label message;
 
@@ -24,30 +24,31 @@ public class LoginController {
 
     @FXML
     private void login() throws IOException {
-        String username = userName.getText();
-        String password1 = password.getText();
-        if (username.equals("admin") && password1.equals("pass")) {
+        String username = userNameField.getText();
+        String password = passwordField.getText();
+        if (username.equals("admin") && password.equals("pass")) {
             App.setRoot("Main");
-        } else if (username.equals("seller") && password1.equals("pass")) {
+        } else if (username.equals("seller") && password.equals("pass")) {
             App.setRoot("seller");
-        } else if (username.equals("buyer") && password1.equals("pass")) {
+        } else if (username.equals("buyer") && password.equals("pass")) {
             App.setRoot("BuyerForm");
-        } else if (username.equals("authority") && password1.equals("pass")) {
+        } else if (username.equals("authority") && password.equals("pass")) {
             App.setRoot("authority");
-        } else if (username.equals("bank") && password1.equals("pass")) {
+        } else if (username.equals("bank") && password.equals("pass")) {
             App.setRoot("bank");
         } else {
             message.setText("Wrong Info Provided");
         }
-        if (password1.equals("")) {
-            message.setText("Please Enter Password");
-        }
-        if (username.equals("")) {
+
+        if (username.isBlank()) {
             message.setText("Please Enter Username");
+        } else if (password.isBlank()) {
+            message.setText("Please Enter Password");
         }
 
     }
-    public void close(ActionEvent event){
+
+    public void close(ActionEvent event) {
         Platform.exit();
         System.exit(0);
     }

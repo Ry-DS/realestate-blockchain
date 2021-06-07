@@ -17,7 +17,7 @@ public class SellerDao implements BlockchainDao {
      */
     public boolean addSeller(Seller seller, SecurityEntity entity) {
         int id = App.getBlockchain().getBlocks().size();
-        seller.setLicenseNumber(id);
+        seller.setPermitId(id);
         return App.publishBlock(seller, entity);
     }
 

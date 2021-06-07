@@ -49,7 +49,7 @@ public class BuyerDao implements BlockchainDao {
                 Buyer buyer = (Buyer) buyerBlock.getData();
                 // Check if there's a decision for this  buyer. We don't store them if there's a decision.
                 boolean foundDecisionBlock = blockchain.getBlocks().stream().anyMatch(decisionBlock ->
-                        decisionBlock.getData() instanceof EntityDecision && decisionBlock.getHash().equals(buyerBlock.getHash()));
+                        decisionBlock.getData() instanceof EntityDecision && ((EntityDecision) decisionBlock.getData()).getHashTarget().equals(buyerBlock.getHash()));
                 if (!foundDecisionBlock)
                     buyers.add(buyer);
             }

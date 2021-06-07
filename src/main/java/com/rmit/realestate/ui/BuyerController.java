@@ -24,7 +24,10 @@ import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 
 public class BuyerController {
@@ -71,8 +74,6 @@ public class BuyerController {
     @FXML
     public void submit() {
         int loanAmount = -1;
-        // assume we're giving an error
-        loanIdLabel.setTextFill(ERROR_COLOR);
         LocalDate dob;
         try {
             dob = this.dobField.getConverter().fromString(this.dobField.getEditor().getText());
@@ -85,6 +86,7 @@ public class BuyerController {
             loanIdLabel.setText("Given DOB isn't valid.");
             return;
         }
+        long dobTime = dob != null ? Date.from(dob.atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime() : -1;
         String fullName = this.fullNameField.getText();
 
         String currentAddress = this.currentAddressField.getText();
@@ -93,40 +95,38 @@ public class BuyerController {
 
 
         Block sellerBlock = App.getBlockchain().findBlockWithData(addressPropertyField.getValue());
-
+        String errMsg = null;
+        System.out.println(new Date().getTime());
         if (fullName.isBlank()) {
-            loanIdLabel.setText("Full-name not given");
-            return;
-        }
-        if (currentAddress.isBlank()) {
-            loanIdLabel.setText("Current Address not given");
-            return;
-        }
-        if (contactNumber.isBlank()) {
-            loanIdLabel.setText("Contact Number not given");
-            return;
-        }
-        if (employerName.isBlank()) {
-            loanIdLabel.setText("Employer Name not given");
-            return;
-        }
-        if (sellerBlock == null) {
-            loanIdLabel.setText("Please Select a Property to Buy");
-            return;
-        }
-        if (loanAmount <= 0) {
-
-            loanIdLabel.setText("Loan Amount not given");
-            return;
-        }
-        // at this point, all fields are filled, safe to give id.
-        Buyer buyer = new Buyer(fullName, dob.toEpochDay(), currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
-        if (App.getBuyerDao().addBuyer(buyer, OWNER)) {
-            loanIdLabel.setTextFill(Color.GREEN);
-            loanIdLabel.setText("Submitted- " + "Loan Application Id: " + buyer.getLoanApplicationId());
-            clearSubmit();
+            errMsg = "Full-name not given";
+        } else if (dobTime <= 0) {
+            errMsg = "DOB cannot be empty.";
+        } else if (dobTime > new Date().getTime()) {
+            errMsg = "DOB cannot be in the future";
+        } else if (currentAddress.isBlank()) {
+            errMsg = "Current Address not given";
+        } else if (contactNumber.isBlank()) {
+            errMsg = "Contact Number not given";
+        } else if (employerName.isBlank()) {
+            errMsg = "Employer Name not given";
+        } else if (sellerBlock == null) {
+            errMsg = "Please Select a Property to Buy";
+        } else if (loanAmount <= 0) {
+            errMsg = "Loan Amount not given";
         } else {
-            loanIdLabel.setText("Failed to verify Buyer onto blockchain.");
+            // at this point, all fields are filled, safe to give id.
+            Buyer buyer = new Buyer(fullName, dob.toEpochDay(), currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
+            if (App.getBuyerDao().addBuyer(buyer, OWNER)) {
+                loanIdLabel.setTextFill(Color.GREEN);
+                loanIdLabel.setText("Submitted - " + "Loan Application Id: " + buyer.getLoanApplicationId());
+                clearSubmit();
+            } else {
+                errMsg = "Failed to verify Buyer onto blockchain.";
+            }
+        }
+        if (errMsg != null) {
+            loanIdLabel.setTextFill(ERROR_COLOR);
+            loanIdLabel.setText(errMsg);
         }
     }
 
@@ -147,6 +147,7 @@ public class BuyerController {
         contactNumberField.clear();
         employerNameField.clear();
         addressPropertyField.getSelectionModel().clearSelection();
+        addressPropertyField.setPromptText("Select a Property");
         loanAmountField.clear();
     }
 

@@ -49,18 +49,20 @@ public class BankController {
     @FXML
     private TableColumn<Buyer, Integer> lid;
 
+
     public void initialize() {
         addressProperty.setItems(App.getBuyerDao().getBuyers());
 
         bankTable.setItems(App.getBuyerDao().getBuyers());
         fullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         DOB.setCellValueFactory(new PropertyValueFactory<>("dob"));
+        // TODO possibly add propertyAddress
         currentAddress.setCellValueFactory(new PropertyValueFactory<>("currentAddress"));
         contactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
         employerName.setCellValueFactory(new PropertyValueFactory<>("employerName"));
         selectedProperty.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         loanAmount.setCellValueFactory(new PropertyValueFactory<>("loanAmount"));
-        lid.setCellValueFactory(new PropertyValueFactory<>("")); //TODO ADD Loan ID to Table when Buyer Submits The form For each ID Generated Display Next to Correct name
+        lid.setCellValueFactory(new PropertyValueFactory<>("loanApplicationId"));
     }
 
     public void close() {
@@ -85,16 +87,15 @@ public class BankController {
 
     public void accept() {
         Buyer buyer = addressProperty.getValue();
-
+        message.setTextFill(Color.RED);
         if (buyer == null) {
-            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
         } else {
-            message.setTextFill(Color.GREEN);
-            message.setText(buyer.getFullName() + "'s loan has been accepted");
-            bankTable.refresh();
-            this.addressProperty.getSelectionModel().clearSelection();
-            App.getBuyerDao().approve(buyer, OWNER);
+            if (App.getBuyerDao().approve(buyer, OWNER)) {
+                message.setTextFill(Color.GREEN);
+                message.setText(buyer.getFullName() + "'s loan has been accepted");
+                this.addressProperty.getSelectionModel().clearSelection();
+            } else message.setText("There was an issue verifying the block onto the blockchain.");
         }
     }
 

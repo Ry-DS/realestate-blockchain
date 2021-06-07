@@ -57,6 +57,8 @@ public class Blockchain {
     }
 
     public Block findBlockWithData(BlockData blockData) {
+        if (blockData == null)
+            return null;
         return getBlocks().stream().filter(b -> b.getData() == blockData).findFirst().orElse(null);
     }
 }
