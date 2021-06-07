@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class Hashing {
-    public static String hash(Object... obj) {
-        String input = Arrays.stream(obj).map(Object::toString).collect(Collectors.joining());
+    public static String hash(Object... objs) {
+        String input = Arrays.stream(objs).map(obj -> obj == null ? "null" : obj.toString()).collect(Collectors.joining());
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));

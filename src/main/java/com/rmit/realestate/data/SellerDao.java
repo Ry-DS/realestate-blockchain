@@ -1,44 +1,43 @@
 package com.rmit.realestate.data;
 
+import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.SecurityEntity;
+import com.rmit.realestate.ui.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+// TODO link with blockchain
 public class SellerDao implements BlockchainDao {
-    private static final ObservableList<Seller> pendingSellers = FXCollections.observableArrayList();
-    private static final ObservableList<Seller> approvedSellers = FXCollections.observableArrayList();
+    private final ObservableList<Seller> pendingSellers = FXCollections.observableArrayList();
+    private final ObservableList<Seller> approvedSellers = FXCollections.observableArrayList();
 
     /**
      * Adds a seller and returns the permit id.
      */
-    public static int addSeller(Seller seller) {
-        // TODO
-        pendingSellers.add(seller);
-        int id = pendingSellers.size();
+    public boolean addSeller(Seller seller, SecurityEntity entity) {
+        int id = App.getBlockchain().getBlocks().size();
         seller.setLicenseNumber(id);
-        return id;
+        return App.publishBlock(seller, entity);
     }
 
-    public static ObservableList<Seller> getPendingSellers() {
+    public ObservableList<Seller> getPendingSellers() {
         return FXCollections.unmodifiableObservableList(pendingSellers);
     }
 
 
-    public static void approve(Seller seller) {
-        // TODO
-        pendingSellers.remove(seller);
-        approvedSellers.add(seller);
-        getApprovedSellers();
+    public boolean approve(Seller seller, SecurityEntity entity) {
+        EntityDecision decision = new EntityDecision(App.getBlockchain().findBlockWithData(seller), ApplicationStatus.APPROVED);
+        return App.publishBlock(decision, entity);
+    }
 
+    public boolean disapprove(Seller seller, SecurityEntity entity) {
+        EntityDecision decision = new EntityDecision(App.getBlockchain().findBlockWithData(seller), ApplicationStatus.DENIED);
+        return App.publishBlock(decision, entity);
 
     }
 
-    public static void disapprove(Seller seller) {
-        // TODO
-        pendingSellers.remove(seller);
-    }
-
-    public static ObservableList<Seller> getApprovedSellers() {
+    public ObservableList<Seller> getApprovedSellers() {
 
         return FXCollections.unmodifiableObservableList(approvedSellers);
     }
@@ -47,6 +46,27 @@ public class SellerDao implements BlockchainDao {
     public void updateFromBlockchain(Blockchain blockchain) {
         pendingSellers.clear();
         approvedSellers.clear();
-        // TODO update from blockchain.
+        // O(n^2) worst case. Could improve with map but this isn't an algorithms course
+        for (Block sellerBlock : blockchain.getBlocks()) {
+            if (sellerBlock.getData() instanceof Seller) {
+                Seller seller = (Seller) sellerBlock.getData();
+                boolean foundDecision = false;
+                // Try work out the approved/deny status of this seller
+                for (Block decisionBlock : blockchain.getBlocks()) {
+                    if (decisionBlock.getData() instanceof EntityDecision){
+                        EntityDecision decision= (EntityDecision) decisionBlock.getData();
+                        // Found a decision for this block, lets see what it is
+                        if(decision.getHashTarget().equals(sellerBlock.getHash())){
+                            foundDecision=true;
+                            if(decision.getStatus()==ApplicationStatus.APPROVED)
+                                approvedSellers.add(seller);
+                            // else we ignore denied sellers.
+                        }
+                    }
+                }
+                if (!foundDecision)
+                    pendingSellers.add(seller);
+            }
+        }
     }
 }

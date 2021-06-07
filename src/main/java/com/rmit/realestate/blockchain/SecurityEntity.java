@@ -2,11 +2,14 @@ package com.rmit.realestate.blockchain;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.SignatureException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -44,7 +47,7 @@ public enum SecurityEntity {
     }
 
     // https://gist.github.com/nielsutrecht/855f3bef0cf559d8d23e94e2aecd4ede
-    public String sign(String plainText) throws Exception {
+    public String sign(String plainText) throws GeneralSecurityException {
         Signature privateSignature = Signature.getInstance("SHA256withRSA");
         privateSignature.initSign(keyPair.getPrivate());
         privateSignature.update(plainText.getBytes(UTF_8));
@@ -54,7 +57,7 @@ public enum SecurityEntity {
         return Base64.getEncoder().encodeToString(signature);
     }
 
-    public boolean verify(String plainText, String signature) throws Exception {
+    public boolean verify(String plainText, String signature) throws GeneralSecurityException {
         Signature publicSignature = Signature.getInstance("SHA256withRSA");
         publicSignature.initVerify(keyPair.getPublic());
         publicSignature.update(plainText.getBytes(UTF_8));

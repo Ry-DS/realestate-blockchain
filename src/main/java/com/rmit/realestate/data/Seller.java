@@ -4,6 +4,7 @@ import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.Hashing;
+import com.rmit.realestate.blockchain.SecurityEntity;
 
 import java.io.File;
 
@@ -11,7 +12,7 @@ public class Seller implements BlockData {
     private final String propertyAddress;
     private final String ownerVendorName;
     private final String buildingDesign;
-    private int licenseNumber;
+    private int licenseNumber=-1;
 
     public Seller(String propertyAddress, String ownerVendorName, File buildingDesign) {
         this.propertyAddress = propertyAddress;
@@ -48,7 +49,9 @@ public class Seller implements BlockData {
 
     @Override
     public boolean verify(Blockchain blockchain, Block container) {
-        if (propertyAddress == null || ownerVendorName == null || buildingDesign == null || licenseNumber <= 0)
+        // Check that only the seller made this block
+        if (propertyAddress == null || ownerVendorName == null || buildingDesign == null
+                || licenseNumber < 0 || container.getCreator() != SecurityEntity.SELLER)
             return false;
         // Check if licence number already exists on blockchain.
         for (Block block : blockchain.getBlocks()) {

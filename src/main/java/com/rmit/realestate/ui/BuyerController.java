@@ -2,6 +2,7 @@ package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Buyer;
 import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.Seller;
@@ -27,6 +28,8 @@ import java.time.format.DateTimeParseException;
 
 
 public class BuyerController {
+    private final SecurityEntity OWNER = SecurityEntity.BUYER;
+
     private final Color ERROR_COLOR = Color.web("#ff1c1c");
 
     @FXML
@@ -57,10 +60,10 @@ public class BuyerController {
 
     @FXML
     public void initialize() {
-        addressPropertyField.setItems(SellerDao.getApprovedSellers());
+        addressPropertyField.setItems(App.getSellerDao().getApprovedSellers());
         // support numbers only
         loanAmountField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-        authorityTable.setItems(SellerDao.getApprovedSellers());
+        authorityTable.setItems(App.getSellerDao().getApprovedSellers());
         addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
         ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
     }
@@ -89,7 +92,7 @@ public class BuyerController {
         String employerName = this.employerNameField.getText();
 
 
-        Block sellerBlock= App.blockchain.findBlockWithData(addressPropertyField.getValue());
+        Block sellerBlock = App.getBlockchain().findBlockWithData(addressPropertyField.getValue());
 
         if (fullName.isBlank()) {
             loanIdLabel.setText("Full-name not given");
@@ -117,13 +120,14 @@ public class BuyerController {
             return;
         }
         // at this point, all fields are filled, safe to give id.
-        loanIdLabel.setTextFill(Color.GREEN);
         Buyer buyer = new Buyer(fullName, dob.toEpochDay(), currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
-        int id = BuyerDao.addBuyer(buyer);
-        loanIdLabel.setText("Submitted- " + "Loan Application Id: " + id);
-
-        clearSubmit();
-
+        if (App.getBuyerDao().addBuyer(buyer, OWNER)) {
+            loanIdLabel.setTextFill(Color.GREEN);
+            loanIdLabel.setText("Submitted- " + "Loan Application Id: " + buyer.getLoanApplicationId());
+            clearSubmit();
+        } else {
+            loanIdLabel.setText("Failed to verify Buyer onto blockchain.");
+        }
     }
 
     public void close(ActionEvent event) {

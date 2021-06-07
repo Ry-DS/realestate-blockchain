@@ -19,7 +19,7 @@ public class PeerConnectionManager {
     private final int MAX_SEARCH_PORT = MIN_SEARCH_PORT + 10;
     private final List<Client> peerReceivers = new ArrayList<>();
     private final Server peerBroadcaster = new Server();
-    private final List<Consumer<Packet>> listeners = new ArrayList<>();
+    private final List<Consumer<?>> listeners = new ArrayList<>();
 
     public PeerConnectionManager() throws IOException {
         int port;

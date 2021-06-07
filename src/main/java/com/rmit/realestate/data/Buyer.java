@@ -4,6 +4,7 @@ import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.Hashing;
+import com.rmit.realestate.blockchain.SecurityEntity;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class Buyer extends BlockPointer {
     private final String contactNumber;
     private final String employerName;
     private final int loanAmount;
-    private int loanApplicationId;
+    private int loanApplicationId = -1;
 
     // TODO Change String dob back to Date dob in Constructor Parameter
     public Buyer(String fullName, long dob, String currentAddress, String contactNumber, String employerName, int loanAmount, Block sellerBlock) {
@@ -76,7 +77,9 @@ public class Buyer extends BlockPointer {
 
     @Override
     public boolean verify(Blockchain blockchain, Block container) {
-        if (fullName == null || dob >= new Date().getTime() || currentAddress == null || contactNumber == null || employerName == null || loanAmount <= 0 || hashTarget == null)
+        if (fullName == null || dob >= new Date().getTime() || currentAddress == null || contactNumber == null
+                || employerName == null || loanAmount <= 0 || loanApplicationId < 0
+                || getHashTarget() == null || container.getCreator() != SecurityEntity.BUYER)
             return false;
         String propertyAddress = getPropertyAddress(blockchain);
         if (propertyAddress == null)
@@ -85,7 +88,7 @@ public class Buyer extends BlockPointer {
         for (Block block : blockchain.getBlocks()) {
             if (block.getData() instanceof Buyer) {
                 Buyer otherBuyer = (Buyer) block.getData();
-                if (otherBuyer.hashTarget.equals(hashTarget) && block != container)
+                if (otherBuyer.getHashTarget().equals(getHashTarget()) && block != container)
                     return false;
             }
         }

@@ -1,5 +1,6 @@
 package com.rmit.realestate.blockchain;
 
+import java.security.GeneralSecurityException;
 import java.util.Date;
 
 public class Block {
@@ -11,14 +12,20 @@ public class Block {
     private final String prevHash;
     private final long timestamp;
 
-    public Block(BlockData data, SecurityEntity creator, String prevHash) throws Exception {
+    public Block(BlockData data, SecurityEntity creator, String prevHash) {
         this.data = data;
         this.creator = creator;
         this.prevHash = prevHash;
         this.timestamp = new Date().getTime();
 
         this.hash = calculateHash();
-        this.signedHashByCreator = creator.sign(hash);
+        try {
+            this.signedHashByCreator = creator.sign(hash);
+        }catch (GeneralSecurityException ex){
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to sign block for creator: "+creator);
+        }
+
         // Block needs to now be broadcasted to the network for the admin to approve.
         this.signedHashByAdmin = null;
     }

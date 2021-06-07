@@ -1,5 +1,6 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Seller;
 import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 
 public class AuthorityController {
+    private final SecurityEntity OWNER = SecurityEntity.AUTHORITY;
 
     @FXML
     ComboBox<Seller> addressProperty;
@@ -35,7 +37,7 @@ public class AuthorityController {
     @FXML
     private TableColumn<Seller, String> pid; // For Table
 
-    ObservableList<Seller> list = FXCollections.observableList(SellerDao.getPendingSellers());
+    ObservableList<Seller> list = FXCollections.observableList(App.getSellerDao().getPendingSellers());
 
 
     public void initialize() {
@@ -80,7 +82,7 @@ public class AuthorityController {
             message.setText(seller.getOwnerVendorName() + "'s property has been accepted for sale");
             authorityTable.refresh();
             this.addressProperty.getSelectionModel().clearSelection();
-            SellerDao.approve(seller);
+            App.getSellerDao().approve(seller, OWNER);
 
         }
     }
@@ -98,7 +100,7 @@ public class AuthorityController {
             message.setText(seller.getOwnerVendorName() + "'s property has been declined for sale");
             authorityTable.refresh();
             this.addressProperty.getSelectionModel().clearSelection();
-            SellerDao.disapprove(seller);
+            App.getSellerDao().disapprove(seller, OWNER);
         }
     }
 

@@ -27,7 +27,7 @@ public class EntityDecision extends BlockPointer {
         for (Block block : blockchain.getBlocks()) {
             EntityDecision existingDecision = block.getData() instanceof EntityDecision ? (EntityDecision) block.getData() : null;
             // Block already has a decision made for it.
-            if (existingDecision != null && existingDecision.hashTarget.equals(this.hashTarget) && block != container)
+            if (existingDecision != null && existingDecision.getHashTarget().equals(this.getHashTarget()) && block != container)
                 return false;
         }
         switch (container.getCreator()) {

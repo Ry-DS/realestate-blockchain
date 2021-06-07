@@ -43,7 +43,7 @@
             <Font name="System Bold" size="17.0" />
          </font></Label>
         <Button fx:id="building_design_button" layoutX="452.0" layoutY="329.0" mnemonicParsing="false" onAction="#upload" prefHeight="30.0" prefWidth="155.0" stylesheets="@styles.css" text="Choose File" />
-      <Button id="clear" layoutX="390.0" layoutY="454.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="110.0" styleClass="clear" stylesheets="@styles.css" text="Clear" textFill="#0033ff">
+      <Button id="clear" layoutX="390.0" layoutY="454.0" mnemonicParsing="false" onAction="#clearButton" prefHeight="26.0" prefWidth="110.0" styleClass="clear" stylesheets="@styles.css" text="Clear" textFill="#0033ff">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

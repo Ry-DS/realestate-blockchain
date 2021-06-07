@@ -1,7 +1,7 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Seller;
-import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class SellerController {
+    private final SecurityEntity OWNER = SecurityEntity.SELLER;
+
     @FXML
     TextField property_address_field;
     @FXML
@@ -57,11 +59,15 @@ public class SellerController {
             return;
         }
         // successful
-        permitId.setTextFill(Color.GREEN);
-        Seller seller=new Seller(propertyAddress, owner, selectedFile);
-        int id = SellerDao.addSeller(seller);
-        permitId.setText("Submitted - "+"Permit Application Id: " + id);
-        clear1();
+
+        Seller seller = new Seller(propertyAddress, owner, selectedFile);
+        if (App.getSellerDao().addSeller(seller, OWNER)) {
+            permitId.setTextFill(Color.GREEN);
+            permitId.setText("Submitted - " + "Permit Application Id: " + seller.getLicenseNumber());
+            submitClear();
+        } else {
+            permitId.setText("Failed to verify block on blockchain.");
+        }
 
     }
 
@@ -76,15 +82,12 @@ public class SellerController {
 
     }
 
-    public void clear() {
-        property_address_field.clear();
-        owner_vendor_name_field.clear();
-        license_number_field.clear();
-        selectedFile = null;
-        building_design_button.setText("Choose File");
+    public void clearButton() {
+        submitClear();
         permitId.setText("");
     }
-    public void clear1() {
+
+    public void submitClear() {
         property_address_field.clear();
         owner_vendor_name_field.clear();
         license_number_field.clear();
