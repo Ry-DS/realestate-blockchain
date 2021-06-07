@@ -2,7 +2,6 @@ package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Seller;
-import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +34,9 @@ public class AuthorityController {
     private TableColumn<Seller, String> ownerTable; // For Table
 
     @FXML
+    private TableColumn<Seller, String> licNumberTable;
+
+    @FXML
     private TableColumn<Seller, String> pid; // For Table
 
     ObservableList<Seller> list = FXCollections.observableList(App.getSellerDao().getPendingSellers());
@@ -46,6 +48,7 @@ public class AuthorityController {
         authorityTable.setItems(list);
         addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
         ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
+        licNumberTable.setCellValueFactory(new PropertyValueFactory<>("licenceNumber"));
         pid.setCellValueFactory(new PropertyValueFactory<>("permitId"));
 
     }

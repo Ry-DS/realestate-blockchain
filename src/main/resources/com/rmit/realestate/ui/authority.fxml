@@ -24,18 +24,18 @@
                </image>
             </ImageView>
             <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="890.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
-                  </items>
-                </Menu>
-              </menus>
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+                     </items>
+                  </Menu>
+               </menus>
             </MenuBar>
             <Label layoutX="323.0" layoutY="60.0" text="Authority - Real Estate" textFill="#348dd1">
                <font>
@@ -59,9 +59,10 @@
             </Label>
             <TableView fx:id="authorityTable" layoutX="155.0" layoutY="148.0" prefHeight="210.0" prefWidth="570.0" tableMenuButtonVisible="true">
                <columns>
-                  <TableColumn fx:id="addressTable" editable="false" prefWidth="239.20001220703125" sortable="false" text="Property Address" />
-                  <TableColumn fx:id="ownerTable" editable="false" prefWidth="211.19998168945312" sortable="false" text="Owner/Vendor" />
-                  <TableColumn fx:id="pid" prefWidth="101.60009765625" text="Permit ID" />
+                  <TableColumn fx:id="addressTable" editable="false" prefWidth="173.5999755859375" sortable="false" text="Property Address" />
+                  <TableColumn fx:id="ownerTable" editable="false" prefWidth="142.4000244140625" sortable="false" text="Owner/Vendor" />
+                  <TableColumn fx:id="licNumberTable" prefWidth="134.39993286132812" text="Licence Number" />
+                  <TableColumn fx:id="pid" prefWidth="100.800048828125" text="Permit ID" />
                </columns>
             </TableView>
             <Button id="cancel" cancelButton="true" layoutX="408.0" layoutY="469.0" mnemonicParsing="false" onAction="#cancel" prefHeight="20.0" prefWidth="77.0" styleClass="cancel" stylesheets="@styles.css" text="Cancel">
