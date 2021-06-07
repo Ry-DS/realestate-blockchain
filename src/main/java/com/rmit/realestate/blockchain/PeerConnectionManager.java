@@ -19,7 +19,7 @@ public class PeerConnectionManager {
     private final int MAX_SEARCH_PORT = MIN_SEARCH_PORT + 10;
     private final List<Client> peerReceivers = new ArrayList<>();
     private final Server peerBroadcaster = new Server();
-    private final List<Consumer<?>> listeners = new ArrayList<>();
+    private final List<Consumer<Object>> listeners = new ArrayList<>();
 
     public PeerConnectionManager() throws IOException {
         int port;
@@ -79,10 +79,9 @@ public class PeerConnectionManager {
     }
 
     public void receivedMessage(Object obj) {
-        if (!(obj instanceof Packet))
-            return;
+
         listeners.forEach(listener -> {
-            listener.accept((Packet) obj);
+            listener.accept(obj);
         });
 
     }

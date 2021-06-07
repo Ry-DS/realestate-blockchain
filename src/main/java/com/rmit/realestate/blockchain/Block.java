@@ -47,7 +47,7 @@ public class Block {
     }
 
     public String calculateHash() {
-        return Hashing.hash(data.toString(), creator.getName(), prevHash, timestamp);
+        return Hashing.hash(data!=null?data.toString():null, creator.getName(), prevHash, timestamp);
     }
 
     public SecurityEntity getCreator() {
