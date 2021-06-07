@@ -1,11 +1,15 @@
 package com.rmit.realestate.data;
 
+import com.rmit.realestate.blockchain.Blockchain;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BuyerDao {
-    private static final List<Buyer> buyers = new ArrayList<>();
+public class BuyerDao implements BlockchainDao {
+    private static final ObservableList<Buyer> buyers = FXCollections.observableArrayList();
 
     /**
      * Adds a seller and returns the permit id.
@@ -14,12 +18,12 @@ public class BuyerDao {
         // TODO
         buyers.add(buyer);
         int id = buyers.size();
-        buyer.setLoanAmount(id);
+        buyer.setLoanApplicationId(id);
         return id;
     }
 
-    public static List<Buyer> getBuyers() {
-        return Collections.unmodifiableList(buyers);
+    public static ObservableList<Buyer> getBuyers() {
+        return FXCollections.unmodifiableObservableList(buyers);
     }
 
     public static void approve(Buyer buyer) {
@@ -30,5 +34,10 @@ public class BuyerDao {
     public static void disapprove(Buyer buyer) {
         // TODO
         buyers.remove(buyer);
+    }
+
+    @Override
+    public void updateFromBlockchain(Blockchain blockchain) {
+        buyers.clear();
     }
 }

@@ -1,44 +1,52 @@
 package com.rmit.realestate.data;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.rmit.realestate.blockchain.Blockchain;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-public class SellerDao {
-    private static final List<Seller> sellers = new ArrayList<>();
-    private static final List<Seller> sellers1 = new ArrayList<>();
+public class SellerDao implements BlockchainDao {
+    private static final ObservableList<Seller> pendingSellers = FXCollections.observableArrayList();
+    private static final ObservableList<Seller> approvedSellers = FXCollections.observableArrayList();
+
     /**
      * Adds a seller and returns the permit id.
      */
     public static int addSeller(Seller seller) {
         // TODO
-        sellers.add(seller);
-        int id = sellers.size();
+        pendingSellers.add(seller);
+        int id = pendingSellers.size();
         seller.setLicenseNumber(id);
         return id;
     }
 
-    public static List<Seller> getSellers() {
-        return Collections.unmodifiableList(sellers);
+    public static ObservableList<Seller> getPendingSellers() {
+        return FXCollections.unmodifiableObservableList(pendingSellers);
     }
 
 
     public static void approve(Seller seller) {
         // TODO
-        sellers.remove(seller);
-        sellers1.add(seller);
-        getApproved();
+        pendingSellers.remove(seller);
+        approvedSellers.add(seller);
+        getApprovedSellers();
 
 
     }
 
     public static void disapprove(Seller seller) {
         // TODO
-        sellers.remove(seller);
+        pendingSellers.remove(seller);
     }
 
-    public static List<Seller> getApproved() {
+    public static ObservableList<Seller> getApprovedSellers() {
 
-        return Collections.unmodifiableList(sellers1);
+        return FXCollections.unmodifiableObservableList(approvedSellers);
+    }
+
+    @Override
+    public void updateFromBlockchain(Blockchain blockchain) {
+        pendingSellers.clear();
+        approvedSellers.clear();
+        // TODO update from blockchain.
     }
 }

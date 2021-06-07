@@ -48,8 +48,18 @@ public class Seller implements BlockData {
 
     @Override
     public boolean verify(Blockchain blockchain, Block container) {
-        // TODO check licence number doesn't already exist in blockchain.
-        return licenseNumber >= 0;
+        if (propertyAddress == null || ownerVendorName == null || buildingDesign == null || licenseNumber <= 0)
+            return false;
+        // Check if licence number already exists on blockchain.
+        for (Block block : blockchain.getBlocks()) {
+            if (block.getData() instanceof Seller) {
+                Seller otherSeller = (Seller) block.getData();
+                if (otherSeller.getLicenseNumber() == licenseNumber && block != container) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override

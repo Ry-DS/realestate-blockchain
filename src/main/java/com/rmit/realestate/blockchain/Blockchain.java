@@ -1,5 +1,7 @@
 package com.rmit.realestate.blockchain;
 
+import com.rmit.realestate.data.Seller;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,12 +56,17 @@ public class Blockchain {
         Block block = new Block(data, creator, blocks.get(blocks.size() - 1).getHash());
         Blockchain tempBlockchain = new Blockchain(blocks);
         tempBlockchain.blocks.add(block);
-        return data.verify(tempBlockchain, block);
+        if (!data.verify(tempBlockchain, block)) return false;
+        return true;
         // Ready to send to network for authority to sign.
         // TODO send
     }
 
     public Collection<Block> getBlocks() {
         return Collections.unmodifiableCollection(blocks);
+    }
+
+    public Block findBlockWithData(BlockData blockData) {
+        return getBlocks().stream().filter(b -> b.getData() == blockData).findFirst().orElse(null);
     }
 }

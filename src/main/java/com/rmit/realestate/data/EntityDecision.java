@@ -1,23 +1,18 @@
 package com.rmit.realestate.data;
 
 import com.rmit.realestate.blockchain.Block;
-import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.Hashing;
 import com.rmit.realestate.blockchain.SecurityEntity;
 
-public class EntityDecision implements BlockData {
-    private final String hashTarget;
+public class EntityDecision extends BlockPointer {
     private final ApplicationStatus status;
 
     public EntityDecision(Block entity, ApplicationStatus status) {
+        super(entity);
         this.status = status;
-        hashTarget = entity.getHash();
     }
 
-    public Block getBlockPointer(Blockchain blockchain) {
-        return blockchain.getBlocks().stream().filter(el -> el.getHash().equals(hashTarget)).findFirst().orElse(null);
-    }
 
     public ApplicationStatus getStatus() {
         return status;
@@ -32,7 +27,7 @@ public class EntityDecision implements BlockData {
         for (Block block : blockchain.getBlocks()) {
             EntityDecision existingDecision = block.getData() instanceof EntityDecision ? (EntityDecision) block.getData() : null;
             // Block already has a decision made for it.
-            if (existingDecision != null && existingDecision.hashTarget.equals(this.hashTarget) && existingDecision != this)
+            if (existingDecision != null && existingDecision.hashTarget.equals(this.hashTarget) && block != container)
                 return false;
         }
         switch (container.getCreator()) {
@@ -48,6 +43,6 @@ public class EntityDecision implements BlockData {
 
     @Override
     public String hash() {
-        return Hashing.hash(hashTarget, status);
+        return Hashing.hash(super.hash(), status);
     }
 }

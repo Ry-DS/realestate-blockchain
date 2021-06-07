@@ -1,12 +1,12 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.blockchain.Block;
+import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.data.Buyer;
 import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.Seller;
 import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,30 +16,35 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 
 public class BuyerController {
+    private final Color ERROR_COLOR = Color.web("#ff1c1c");
+
     @FXML
-    TextField fullName;
+    TextField fullNameField;
     @FXML
-    DatePicker dob;
+    DatePicker dobField;
     @FXML
-    TextField currentAddress;
+    TextField currentAddressField;
     @FXML
-    TextField contactNumber;
+    TextField contactNumberField;
     @FXML
-    TextField employerName;
+    TextField employerNameField;
     @FXML
-    TextField loanAmount;
+    TextField loanAmountField;
     @FXML
-    ComboBox<Seller> addressProperty;
+    ComboBox<Seller> addressPropertyField;
     @FXML
-    Label loanId;
+    Label loanIdLabel;
 
     @FXML
     TableView<Seller> authorityTable;  // For Table
@@ -50,83 +55,75 @@ public class BuyerController {
     @FXML
     private TableColumn<Seller, String> ownerTable; // For Table
 
-    ObservableList<Seller> list = FXCollections.observableList(SellerDao.getApproved());
-
-    private final Color error = Color.web("#ff1c1c");
-
-//    ObservableList<String> list = FXCollections.observableArrayList("House 1", "House 2");
-
+    @FXML
     public void initialize() {
-        addressProperty.setItems(list);
-
-        authorityTable.setItems(list);
+        addressPropertyField.setItems(SellerDao.getApprovedSellers());
+        // support numbers only
+        loanAmountField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+        authorityTable.setItems(SellerDao.getApprovedSellers());
         addressTable.setCellValueFactory(new PropertyValueFactory<>("propertyAddress"));
         ownerTable.setCellValueFactory(new PropertyValueFactory<>("ownerVendorName"));
     }
 
     @FXML
     public void submit() {
-        String fullName1 = fullName.getText();
-        LocalDate dob1 = dob.getConverter().fromString(dob.getEditor().getText());
-        String currentAddress1 = currentAddress.getText();
-        String contactNumber1 = contactNumber.getText();
-        String employerName1 = employerName.getText();
-        String loanAmount1 = loanAmount.getText();
+        int loanAmount = -1;
+        // assume we're giving an error
+        loanIdLabel.setTextFill(ERROR_COLOR);
+        LocalDate dob;
+        try {
+            dob = this.dobField.getConverter().fromString(this.dobField.getEditor().getText());
+            if (!loanAmountField.getText().isBlank())
+                loanAmount = Integer.parseInt(this.loanAmountField.getText().replaceAll(",", ""));
+        } catch (NumberFormatException ex) {
+            loanIdLabel.setText("Loan amount isn't a valid number.");
+            return;
+        } catch (DateTimeParseException ex) {
+            loanIdLabel.setText("Given DOB isn't valid.");
+            return;
+        }
+        String fullName = this.fullNameField.getText();
 
-        Seller seller = addressProperty.getValue();
-        String addressProperty1 = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
+        String currentAddress = this.currentAddressField.getText();
+        String contactNumber = this.contactNumberField.getText();
+        String employerName = this.employerNameField.getText();
 
-        if (fullName1 == null || fullName1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Fullname not given");
+
+        Block sellerBlock= App.blockchain.findBlockWithData(addressPropertyField.getValue());
+
+        if (fullName.isBlank()) {
+            loanIdLabel.setText("Full-name not given");
             return;
         }
-        if (dob1 == null) {
-            loanId.setTextFill(error);
-            loanId.setText("Date of Birth not given");
+        if (currentAddress.isBlank()) {
+            loanIdLabel.setText("Current Address not given");
             return;
         }
-        if (currentAddress1 == null || currentAddress1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Current Address not given");
+        if (contactNumber.isBlank()) {
+            loanIdLabel.setText("Contact Number not given");
             return;
         }
-        if (contactNumber1 == null || contactNumber1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Contact Number not given");
+        if (employerName.isBlank()) {
+            loanIdLabel.setText("Employer Name not given");
             return;
         }
-        if (employerName1 == null || employerName1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Employer Name not given");
+        if (sellerBlock == null) {
+            loanIdLabel.setText("Please Select a Property to Buy");
             return;
         }
-        if (addressProperty1 == null || addressProperty1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Please Select a Property to Buy");
-            return;
-        }
-        if (loanAmount1 == null || loanAmount1.isBlank()) {
-            loanId.setTextFill(error);
-            loanId.setText("Loan Amount not given");
+        if (loanAmount <= 0) {
+
+            loanIdLabel.setText("Loan Amount not given");
             return;
         }
         // at this point, all fields are filled, safe to give id.
-        loanId.setTextFill(Color.GREEN);
-        Buyer buyer = new Buyer(fullName1, dob1.toString(), currentAddress1, contactNumber1, employerName1, addressProperty1);
+        loanIdLabel.setTextFill(Color.GREEN);
+        Buyer buyer = new Buyer(fullName, dob.toEpochDay(), currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
         int id = BuyerDao.addBuyer(buyer);
-        loanId.setText("Submitted- " + "Loan Application Id: " + id);
+        loanIdLabel.setText("Submitted- " + "Loan Application Id: " + id);
 
         clearSubmit();
 
-// TODO make buyer object
-//        try {
-//            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(dob.getText());
-//            Buyer buyer = new Buyer(fullName.getText(), date1, currentAddress.getText(), contactNumber.getText(), employerName.getText(),
-//                    (Integer) addressProperty.getValue(), loanAmount.getText());
-//        }catch (Exception ex){
-//
-//        }
     }
 
     public void close(ActionEvent event) {
@@ -136,17 +133,17 @@ public class BuyerController {
 
     public void clearButton() {
         clearSubmit();
-        loanId.setText("");
+        loanIdLabel.setText("");
     }
 
     public void clearSubmit() {
-        fullName.clear();
-        dob.getEditor().clear();
-        currentAddress.clear();
-        contactNumber.clear();
-        employerName.clear();
-        addressProperty.getSelectionModel().clearSelection();
-        loanAmount.clear();
+        fullNameField.clear();
+        dobField.getEditor().clear();
+        currentAddressField.clear();
+        contactNumberField.clear();
+        employerNameField.clear();
+        addressPropertyField.getSelectionModel().clearSelection();
+        loanAmountField.clear();
     }
 
     @FXML

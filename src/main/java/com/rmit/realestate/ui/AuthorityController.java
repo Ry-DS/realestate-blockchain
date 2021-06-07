@@ -35,7 +35,7 @@ public class AuthorityController {
     @FXML
     private TableColumn<Seller, String> pid; // For Table
 
-    ObservableList<Seller> list = FXCollections.observableList(SellerDao.getSellers());
+    ObservableList<Seller> list = FXCollections.observableList(SellerDao.getPendingSellers());
 
 
     public void initialize() {

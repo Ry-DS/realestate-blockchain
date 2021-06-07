@@ -5,23 +5,38 @@ import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.Hashing;
 
-public class Buyer implements BlockData {
+import java.util.Date;
+
+public class Buyer extends BlockPointer {
     private final String fullName;
-    private final String dob;
+    private final long dob;
     private final String currentAddress;
     private final String contactNumber;
     private final String employerName;
-    private int loanAmount;
-    private final String propertyAddress;
+    private final int loanAmount;
+    private int loanApplicationId;
 
     // TODO Change String dob back to Date dob in Constructor Parameter
-    public Buyer(String fullName, String dob, String currentAddress, String contactNumber, String employerName, String propertyAddress) {
+    public Buyer(String fullName, long dob, String currentAddress, String contactNumber, String employerName, int loanAmount, Block sellerBlock) {
+        super(sellerBlock);
+        this.loanAmount = loanAmount;
         this.fullName = fullName;
         this.dob = dob;
         this.currentAddress = currentAddress;
         this.contactNumber = contactNumber;
         this.employerName = employerName;
-        this.propertyAddress = propertyAddress;
+    }
+
+    public int getLoanApplicationId() {
+        return loanApplicationId;
+    }
+
+    public void setLoanApplicationId(int loanApplicationId) {
+        this.loanApplicationId = loanApplicationId;
+    }
+
+    public int getLoanAmount() {
+        return loanAmount;
     }
 
     public String getFullName() {
@@ -29,7 +44,7 @@ public class Buyer implements BlockData {
     }
 
     // TODO Change String dob back to Date dob
-    public String getDob() {
+    public long getDob() {
         return dob;
     }
 
@@ -46,12 +61,11 @@ public class Buyer implements BlockData {
     }
 
 
-    public void setLoanAmount(int loanAmount) {
-        this.loanAmount = loanAmount;
-    }
-
-    public String getPropertyAddress() {
-        return propertyAddress;
+    public String getPropertyAddress(Blockchain blockchain) {
+        BlockData data = getBlockPointer(blockchain).getData();
+        if (!(data instanceof Seller))
+            return null;
+        return ((Seller) data).getPropertyAddress();
     }
 
     @Override
@@ -62,17 +76,24 @@ public class Buyer implements BlockData {
 
     @Override
     public boolean verify(Blockchain blockchain, Block container) {
-        // Check DOB happens in the past.
-        // Check contact-number has no letters.
-        // Check nothing is null
-        // Check name has no numbers
-        // Size constraints
-        // Block pointer to the seller's house
-        return false;
+        if (fullName == null || dob >= new Date().getTime() || currentAddress == null || contactNumber == null || employerName == null || loanAmount <= 0 || hashTarget == null)
+            return false;
+        String propertyAddress = getPropertyAddress(blockchain);
+        if (propertyAddress == null)
+            return false;
+        // check existing buyer
+        for (Block block : blockchain.getBlocks()) {
+            if (block.getData() instanceof Buyer) {
+                Buyer otherBuyer = (Buyer) block.getData();
+                if (otherBuyer.hashTarget.equals(hashTarget) && block != container)
+                    return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public String hash() {
-        return Hashing.hash(fullName, dob, currentAddress, contactNumber, employerName, loanAmount, propertyAddress);
+        return Hashing.hash(super.hash(), fullName, dob, currentAddress, contactNumber, employerName, loanAmount);
     }
 }
