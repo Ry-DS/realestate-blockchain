@@ -9,18 +9,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class BuyerController {
     @FXML
     TextField fullName;
     @FXML
-    TextField dob;
+    DatePicker dob;
     @FXML
     TextField currentAddress;
     @FXML
@@ -60,7 +67,7 @@ public class BuyerController {
     @FXML
     public void submit() {
         String fullName1 = fullName.getText();
-        String dob1 = dob.getText();
+        LocalDate dob1 = dob.getConverter().fromString(dob.getEditor().getText());
         String currentAddress1 = currentAddress.getText();
         String contactNumber1 = contactNumber.getText();
         String employerName1 = employerName.getText();
@@ -74,7 +81,7 @@ public class BuyerController {
             loanId.setText("Fullname not given");
             return;
         }
-        if (dob1 == null || dob1.isBlank()) {
+        if (dob1 == null) {
             loanId.setTextFill(error);
             loanId.setText("Date of Birth not given");
             return;
@@ -106,11 +113,11 @@ public class BuyerController {
         }
         // at this point, all fields are filled, safe to give id.
         loanId.setTextFill(Color.GREEN);
-        Buyer buyer = new Buyer(fullName1, dob1, currentAddress1, contactNumber1, employerName1, addressProperty1);
+        Buyer buyer = new Buyer(fullName1, dob1.toString(), currentAddress1, contactNumber1, employerName1, addressProperty1);
         int id = BuyerDao.addBuyer(buyer);
         loanId.setText("Submitted- " + "Loan Application Id: " + id);
 
-        clear1();
+        clearSubmit();
 
 // TODO make buyer object
 //        try {
@@ -127,20 +134,14 @@ public class BuyerController {
         System.exit(0);
     }
 
-    public void clear() {
-        fullName.clear();
-        dob.clear();
-        currentAddress.clear();
-        contactNumber.clear();
-        employerName.clear();
-        addressProperty.getSelectionModel().clearSelection();
-        loanAmount.clear();
+    public void clearButton() {
+        clearSubmit();
         loanId.setText("");
     }
 
-    public void clear1() {
+    public void clearSubmit() {
         fullName.clear();
-        dob.clear();
+        dob.getEditor().clear();
         currentAddress.clear();
         contactNumber.clear();
         employerName.clear();

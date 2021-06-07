@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class Blockchain {
-    private final List<Block<Verifiable>> blocks;
+    private final List<Block> blocks;
 
-    public Blockchain(List<Block<Verifiable>> blocks) {
+    public Blockchain(List<Block> blocks) {
         this.blocks = blocks;
     }
 
@@ -35,7 +35,7 @@ public class Blockchain {
             // if not signed by admin or owner of block
             if (!currentBlock.verifySignatures())
                 return false;
-            if (!currentBlock.getData().verify(this)) {
+            if (!currentBlock.getData().verify(this, currentBlock)) {
                 return false;
             }
 
@@ -50,16 +50,16 @@ public class Blockchain {
      *
      * @return true if successful, false otherwise
      */
-    public boolean publishBlock(Verifiable data, SecurityEntity creator) throws Exception {
-        Block<Verifiable> block = new Block<>(data, creator, blocks.get(blocks.size() - 1).getHash());
+    public boolean publishBlock(BlockData data, SecurityEntity creator) throws Exception {
+        Block block = new Block(data, creator, blocks.get(blocks.size() - 1).getHash());
         Blockchain tempBlockchain = new Blockchain(blocks);
         tempBlockchain.blocks.add(block);
-        return data.verify(tempBlockchain);
+        return data.verify(tempBlockchain, block);
         // Ready to send to network for authority to sign.
         // TODO send
     }
 
-    public Collection<Block<Verifiable>> getBlocks() {
+    public Collection<Block> getBlocks() {
         return Collections.unmodifiableCollection(blocks);
     }
 }

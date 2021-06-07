@@ -13,7 +13,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class SellerController {
     @FXML
@@ -111,7 +110,8 @@ public class SellerController {
         about.setContentText("Application Version: 1.0.0.0");
         about.setHeaderText("About Real Estate - Seller");
         about.show();
-        about.getGraphic().getClass().getResourceAsStream("icon.png");
+        // TODO invalid
+        // about.getGraphic().getClass().getResourceAsStream("icon.png");
     }
 
 }

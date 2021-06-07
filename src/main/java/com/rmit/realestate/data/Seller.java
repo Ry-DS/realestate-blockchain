@@ -1,8 +1,13 @@
 package com.rmit.realestate.data;
 
+import com.rmit.realestate.blockchain.Block;
+import com.rmit.realestate.blockchain.BlockData;
+import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.Hashing;
+
 import java.io.File;
 
-public class Seller {
+public class Seller implements BlockData {
     private final String propertyAddress;
     private final String ownerVendorName;
     private final String buildingDesign;
@@ -39,6 +44,17 @@ public class Seller {
     @Override
     public String toString() {
         return getPropertyAddress();
+    }
+
+    @Override
+    public boolean verify(Blockchain blockchain, Block container) {
+        // TODO check licence number doesn't already exist in blockchain.
+        return licenseNumber >= 0;
+    }
+
+    @Override
+    public String hash() {
+        return Hashing.hash(propertyAddress, ownerVendorName, buildingDesign, licenseNumber);
     }
 }
 

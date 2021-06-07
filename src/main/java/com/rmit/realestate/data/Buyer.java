@@ -1,10 +1,13 @@
 package com.rmit.realestate.data;
 
-import java.util.Date;
+import com.rmit.realestate.blockchain.Block;
+import com.rmit.realestate.blockchain.BlockData;
+import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.Hashing;
 
-public class Buyer {
+public class Buyer implements BlockData {
     private final String fullName;
-    private final String dob; // TODO Change String dob back to Date dob, Wasn't sure how to make Date dob in BuyerController for Form so I changed this Temporary for you to fix
+    private final String dob;
     private final String currentAddress;
     private final String contactNumber;
     private final String employerName;
@@ -57,4 +60,19 @@ public class Buyer {
     }
 
 
+    @Override
+    public boolean verify(Blockchain blockchain, Block container) {
+        // Check DOB happens in the past.
+        // Check contact-number has no letters.
+        // Check nothing is null
+        // Check name has no numbers
+        // Size constraints
+        // Block pointer to the seller's house
+        return false;
+    }
+
+    @Override
+    public String hash() {
+        return Hashing.hash(fullName, dob, currentAddress, contactNumber, employerName, loanAmount, propertyAddress);
+    }
 }

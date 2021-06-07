@@ -2,8 +2,8 @@ package com.rmit.realestate.blockchain;
 
 import java.util.Date;
 
-public class Block<T> {
-    private final T data;
+public class Block {
+    private final BlockData data;
     private final SecurityEntity creator;
     private final String hash;
     private final String signedHashByAdmin;
@@ -11,7 +11,7 @@ public class Block<T> {
     private final String prevHash;
     private final long timestamp;
 
-    public Block(T data, SecurityEntity creator, String prevHash) throws Exception {
+    public Block(BlockData data, SecurityEntity creator, String prevHash) throws Exception {
         this.data = data;
         this.creator = creator;
         this.prevHash = prevHash;
@@ -23,7 +23,7 @@ public class Block<T> {
         this.signedHashByAdmin = null;
     }
 
-    public T getData() {
+    public BlockData getData() {
         return data;
     }
 
