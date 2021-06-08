@@ -1,8 +1,11 @@
 package com.rmit.realestate.ui;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -16,9 +19,38 @@ public class LoginController {
     TextField passwordField;
     @FXML
     Label message;
+    @FXML
+    Label lenBlockchainLabel;
+    ChangeListener<Number> lenBlockchainListener;
+    @FXML
+    Label numClientsLabel;
+    ChangeListener<Number> numClientsListener;
 
     @FXML
-    private void cancel() throws IOException {
+    Label numServerConLabel;
+    ChangeListener<Number> numServerConListener;
+
+    public void initialize() {
+        App.blockchainSizeProperty().addListener(lenBlockchainListener = (observable, oldValue, newValue) -> {
+            lenBlockchainLabel.setText(String.valueOf(newValue.intValue()));
+        });
+        App.getPeerConnectionManager().numberOfServerConnectionsProperty().addListener(
+                numServerConListener = (observable, oldValue, newValue) -> numServerConLabel.setText(String.valueOf(newValue.intValue())));
+        App.getPeerConnectionManager().numOfClientConnectionsProperty().addListener(
+                numClientsListener = (observable, oldValue, newValue) -> numClientsLabel.setText(String.valueOf(newValue.intValue())));
+        lenBlockchainLabel.setText(String.valueOf(App.blockchainSizeProperty().intValue()));
+        numClientsLabel.setText(String.valueOf(App.getPeerConnectionManager().numOfClientConnectionsProperty().intValue()));
+        numServerConLabel.setText(String.valueOf(App.getPeerConnectionManager().numberOfServerConnectionsProperty().intValue()));
+    }
+
+
+    public void shutdown() {
+        App.blockchainSizeProperty().removeListener(lenBlockchainListener);
+        App.getPeerConnectionManager().numOfClientConnectionsProperty().removeListener(numClientsListener);
+        App.getPeerConnectionManager().numberOfServerConnectionsProperty().removeListener(numServerConListener);
+    }
+
+    public void cancel() throws IOException {
         App.setRoot("Main");
     }
 
@@ -48,9 +80,8 @@ public class LoginController {
 
     }
 
-    public void close(ActionEvent event) {
+    public void close() {
         Platform.exit();
-        System.exit(0);
     }
 
 }

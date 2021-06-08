@@ -3,11 +3,13 @@ package com.rmit.realestate.ui;
 import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
-import com.rmit.realestate.blockchain.PeerConnectionManager;
+import com.rmit.realestate.blockchain.network.PeerConnectionManager;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.SellerDao;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,11 +26,14 @@ import java.util.List;
  * JavaFX App
  */
 public class App extends Application {
-    public static Scene scene;
-    public static Stage stage;
-    public static PeerConnectionManager peerConnectionManager;
+    // Whether this app instance will be responsible for verifying blocks onto the blockchain.
+    private static boolean isAdmin = false;
+    private static Scene scene;
+    private static Stage stage;
+    private static PeerConnectionManager peerConnectionManager;
     // TODO get from network
     private static Blockchain blockchain;
+    private static final IntegerProperty blockchainSize = new SimpleIntegerProperty(1);
     // DAOs
     private static final SellerDao sellerDao = new SellerDao();
     private static final BuyerDao buyerDao = new BuyerDao();
@@ -39,8 +44,6 @@ public class App extends Application {
         Security.addProvider(new BouncyCastleProvider());
         // Load private and public signing keys for all our users
         SecurityEntity.load();
-        // Setup P2P networking instance
-        peerConnectionManager = new PeerConnectionManager();
         // Start off with an empty blockchain unless we get something better from the network (longer)
         setBlockchain(new Blockchain());
 
@@ -86,13 +89,20 @@ public class App extends Application {
     }
 
     public static void setBlockchain(Blockchain blockchain) {
+        if (!blockchain.verify())
+            throw new IllegalStateException("Tried to set an unverified blockchain.");
         App.blockchain = blockchain;
         sellerDao.updateFromBlockchain(blockchain);
         buyerDao.updateFromBlockchain(blockchain);
+        blockchainSize.set(blockchain.getBlocks().size());
     }
 
     public static Blockchain getBlockchain() {
         return blockchain;
+    }
+
+    public static IntegerProperty blockchainSizeProperty() {
+        return blockchainSize;
     }
 
     public static SellerDao getSellerDao() {
@@ -103,8 +113,46 @@ public class App extends Application {
         return buyerDao;
     }
 
-    public static void main(String[] args) {
-        launch();
+    /**
+     * True if the current instance has the power to verify its own blocks, and the blocks of others.
+     */
+    public static boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public static Scene getScene() {
+        return scene;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static PeerConnectionManager getPeerConnectionManager() {
+        return peerConnectionManager;
+    }
+
+    public static void main(String[] args) throws IOException {
+        int port = 1000;
+        int p2pPort = port;
+
+        for (String arg : args) {
+            if (arg.startsWith("--port=")) {
+                port = Integer.parseInt(arg.split("=")[1]);
+            }
+            if (arg.startsWith("--p2pPort=")) {
+                p2pPort = Integer.parseInt(arg.split("=")[1]);
+            }
+            if (arg.equals("--admin"))
+                isAdmin = true;
+        }
+        if (port < p2pPort || port > p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE)
+            throw new IllegalArgumentException("Port must be within the range of P2P port range: " + p2pPort + " to " + (p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE));
+        new App();
+        // Start P2P network
+        peerConnectionManager = new PeerConnectionManager(port, p2pPort);
+        // TODO add network listener peerConnectionManager.
+        launch(args);
     }
 
 }

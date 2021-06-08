@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rmit.realestate.ui.LoginController">
@@ -51,6 +52,16 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
+            <FlowPane layoutX="14.0" layoutY="14.0" prefHeight="72.0" prefWidth="237.0">
+               <children>
+                  <Label text="Number of Following Connections: " />
+                  <Label fx:id="numClientsLabel" text="Label" />
+                  <Label text="Number of Followed Connections: " />
+                  <Label fx:id="numServerConLabel" text="Label" />
+                  <Label text="Length of Blockchain: " />
+                  <Label fx:id="lenBlockchainLabel" text="Label" />
+               </children>
+            </FlowPane>
          </children>
       </AnchorPane>
    </right>

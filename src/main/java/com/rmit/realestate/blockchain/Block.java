@@ -7,7 +7,7 @@ public class Block {
     private final BlockData data;
     private final SecurityEntity creator;
     private final String hash;
-    private final String signedHashByAdmin;
+    private String signedHashByAdmin;
     private final String signedHashByCreator;
     private final String prevHash;
     private final long timestamp;
@@ -21,9 +21,9 @@ public class Block {
         this.hash = calculateHash();
         try {
             this.signedHashByCreator = creator.sign(hash);
-        }catch (GeneralSecurityException ex){
+        } catch (GeneralSecurityException ex) {
             ex.printStackTrace();
-            throw new RuntimeException("Failed to sign block for creator: "+creator);
+            throw new RuntimeException("Failed to sign block for creator: " + creator);
         }
 
         // Block needs to now be broadcasted to the network for the admin to approve.
@@ -47,7 +47,7 @@ public class Block {
     }
 
     public String calculateHash() {
-        return Hashing.hash(data!=null?data.toString():null, creator.getName(), prevHash, timestamp);
+        return Hashing.hash(data != null ? data.toString() : null, creator.getName(), prevHash, timestamp);
     }
 
     public SecurityEntity getCreator() {
@@ -56,6 +56,22 @@ public class Block {
 
     public String getSignedHashByAdmin() {
         return signedHashByAdmin;
+    }
+
+    /**
+     * Sign this block and make it completely valid. Should only be called if this app user is a blockchain admin.
+     * In reality, the key used here would only be accessible to a blockchain admin.
+     *
+     * @return the same block for chaining.
+     */
+    protected Block setSignedByAdmin() {
+        try {
+            this.signedHashByAdmin = SecurityEntity.BLOCKCHAIN_ADMIN.sign(hash);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to sign block for blockchain admin");
+        }
+        return this;
     }
 
     public String getSignedHashByCreator() {

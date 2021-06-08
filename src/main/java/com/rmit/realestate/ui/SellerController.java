@@ -60,10 +60,10 @@ public class SellerController {
         }
         // successful
 
-        Seller seller = new Seller(propertyAddress, owner,license, selectedFile);
+        Seller seller = new Seller(propertyAddress, owner, license, selectedFile);
         if (App.getSellerDao().addSeller(seller, OWNER)) {
             permitId.setTextFill(Color.GREEN);
-            permitId.setText("Submitted - " + "Permit Application Id: " + seller.getPermitId());
+            permitId.setText("Submitted - Permit Application Id: " + seller.getPermitId());
             submitClear();
         } else {
             permitId.setText("Failed to verify block on blockchain.");
@@ -75,7 +75,7 @@ public class SellerController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-        selectedFile = fileChooser.showOpenDialog(App.stage);
+        selectedFile = fileChooser.showOpenDialog(App.getStage());
         if (selectedFile != null) {
             building_design_button.setText(selectedFile.getName());
         }

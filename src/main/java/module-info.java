@@ -9,4 +9,5 @@ module com.rmit.realestate {
     exports com.rmit.realestate.ui;
     exports com.rmit.realestate.data;
     exports com.rmit.realestate.blockchain;
+    exports com.rmit.realestate.blockchain.network;
 }
