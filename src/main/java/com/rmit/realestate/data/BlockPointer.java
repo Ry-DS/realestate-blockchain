@@ -9,11 +9,13 @@ import com.rmit.realestate.blockchain.Hashing;
  * Block data which points to another block in the chain.
  */
 public abstract class BlockPointer implements BlockData {
-    private final String hashTarget;
+    private String hashTarget;
 
     public BlockPointer(Block targetBlock) {
         this.hashTarget = targetBlock.getHash();
     }
+    // For Serialization
+    protected BlockPointer(){}
     public Block getBlockPointer(Blockchain blockchain) {
         return blockchain.getBlocks().stream().filter(el -> el.getHash().equals(hashTarget)).findFirst().orElse(null);
     }

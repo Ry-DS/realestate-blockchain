@@ -9,10 +9,10 @@ import com.rmit.realestate.blockchain.SecurityEntity;
 import java.io.File;
 
 public class Seller implements BlockData {
-    private final String propertyAddress;
-    private final String ownerVendorName;
-    private final String buildingDesign;
-    private final String licenceNumber;
+    private String propertyAddress;
+    private String ownerVendorName;
+    private String buildingDesign;
+    private String licenceNumber;
     private int permitId = -1;
 
     public Seller(String propertyAddress, String ownerVendorName, String licenceNumber, File buildingDesign) {
@@ -23,6 +23,8 @@ public class Seller implements BlockData {
         this.buildingDesign = buildingDesign.getName();
 
     }
+    // For serialization
+    private Seller(){}
 
     public String getLicenceNumber() {
         return licenceNumber;

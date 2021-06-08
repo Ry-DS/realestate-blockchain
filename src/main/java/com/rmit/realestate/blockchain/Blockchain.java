@@ -28,14 +28,15 @@ public class Blockchain {
         if (blocks.isEmpty())
             return false;
         // Verify the genesis block has null data.
-        if (blocks.get(0).getData() != null)
+        if (blocks.get(0).getData() != null) {
+            System.err.println("Invalid Genesis Block");
             return false;
+        }
         for (int i = 1; i < blocks.size(); i++) {
             var currentBlock = blocks.get(i);
             var previousBlock = blocks.get(i - 1);
             if (!currentBlock.getHash().equals(currentBlock.calculateHash())) {
                 System.err.println("Hash of block " + i + " is incorrect.");
-
                 return false;
             }
             if (!previousBlock.getHash().equals(currentBlock.getPrevHash())) {
@@ -44,13 +45,18 @@ public class Blockchain {
             }
             // Check if signatures are correct: Proof of Authority
             // if not signed by admin or owner of block
-            if (!currentBlock.verifySignatures())
+            if (!currentBlock.verifySignatures()) {
+                System.err.println("Signature check failed on " + i);
                 return false;
+            }
             // Only admin can create blocks with null data
-            if (currentBlock.getData() == null && currentBlock.getCreator() != SecurityEntity.BLOCKCHAIN_ADMIN)
+            if (currentBlock.getData() == null && currentBlock.getCreator() != SecurityEntity.BLOCKCHAIN_ADMIN) {
+                System.err.println("Block data is null on " + i);
                 return false;
+            }
             // Verify data to make sure its clear of defects
             if (!currentBlock.getData().verify(this, currentBlock)) {
+                System.err.println("Data verification failed on " + i);
                 return false;
             }
 

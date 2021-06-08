@@ -9,12 +9,12 @@ import com.rmit.realestate.blockchain.SecurityEntity;
 import java.util.Date;
 
 public class Buyer extends BlockPointer {
-    private final String fullName;
-    private final long dob;
-    private final String currentAddress;
-    private final String contactNumber;
-    private final String employerName;
-    private final int loanAmount;
+    private String fullName;
+    private long dob;
+    private String currentAddress;
+    private String contactNumber;
+    private String employerName;
+    private int loanAmount;
     private int loanApplicationId = -1;
 
     // TODO Change String dob back to Date dob in Constructor Parameter
@@ -26,6 +26,11 @@ public class Buyer extends BlockPointer {
         this.currentAddress = currentAddress;
         this.contactNumber = contactNumber;
         this.employerName = employerName;
+    }
+
+    // For serialization
+    private Buyer() {
+
     }
 
     public int getLoanApplicationId() {

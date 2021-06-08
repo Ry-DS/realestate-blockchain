@@ -6,12 +6,14 @@ import com.rmit.realestate.blockchain.Hashing;
 import com.rmit.realestate.blockchain.SecurityEntity;
 
 public class EntityDecision extends BlockPointer {
-    private final ApplicationStatus status;
+    private ApplicationStatus status;
 
     public EntityDecision(Block entity, ApplicationStatus status) {
         super(entity);
         this.status = status;
     }
+    // For serialization
+    private EntityDecision(){ }
 
 
     public ApplicationStatus getStatus() {

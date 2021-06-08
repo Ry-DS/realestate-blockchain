@@ -3,7 +3,7 @@ package com.rmit.realestate.ui;
 import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
-import com.rmit.realestate.blockchain.network.BlockchainNetworkHandler;
+import com.rmit.realestate.blockchain.network.BlockchainNetworkFileHandler;
 import com.rmit.realestate.blockchain.network.PeerConnectionManager;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.BuyerDao;
@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Security;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class App extends Application {
     private static Scene scene;
     private static Stage stage;
     private static PeerConnectionManager peerConnectionManager;
+    private static BlockchainNetworkFileHandler blockchainHandler;
+
     // TODO get from network
     private static Blockchain blockchain;
     private static final IntegerProperty blockchainSize = new SimpleIntegerProperty(1);
@@ -39,15 +42,29 @@ public class App extends Application {
     private static final SellerDao sellerDao = new SellerDao();
     private static final BuyerDao buyerDao = new BuyerDao();
 
-    private static void initialize() {
-        if (blockchain != null)
+    private static void initialize(int port, int p2pPort) throws IOException {
+        if (peerConnectionManager != null)
             throw new IllegalStateException("Already initialized");
         // Security provider
         Security.addProvider(new BouncyCastleProvider());
         // Load private and public signing keys for all our users
         SecurityEntity.load();
-        // Start off with an empty blockchain unless we get something better from the network (longer)
-        setBlockchain(new Blockchain());
+        // Start P2P network
+        peerConnectionManager = new PeerConnectionManager(port, p2pPort);
+        blockchainHandler = new BlockchainNetworkFileHandler(peerConnectionManager);
+
+        Blockchain fromFile = null;
+        try {
+            fromFile = blockchainHandler.loadBlockchainFromFile();
+        } catch (FileNotFoundException ignored) {
+        }
+        if (fromFile == null || !fromFile.verify()) {
+            System.out.println("Failed to find/load blockchain file. Making a new chain...");
+            setBlockchain(new Blockchain());
+        } else {
+            System.out.println("Loaded a blockchain with " + fromFile.getBlocks().size() + " blocks from file.");
+            setBlockchain(fromFile);
+        }
     }
 
     @Override
@@ -78,6 +95,7 @@ public class App extends Application {
         if (!data.verify(tempBlockchain, block)) return false;
         System.out.println("TODO");
         // TODO shouldn't do this.
+        block.setSignedByAdmin();
         setBlockchain(tempBlockchain);
         return true;
         // Ready to send to network for authority to sign.
@@ -100,6 +118,12 @@ public class App extends Application {
         sellerDao.updateFromBlockchain(blockchain);
         buyerDao.updateFromBlockchain(blockchain);
         blockchainSize.set(blockchain.getBlocks().size());
+        try {
+            blockchainHandler.saveBlockchainToFile(blockchain);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.err.println("Failed to save blockchain");
+        }
     }
 
     public static Blockchain getBlockchain() {
@@ -153,12 +177,9 @@ public class App extends Application {
         }
         if (port < p2pPort || port > p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE)
             throw new IllegalArgumentException("Port must be within the range of P2P port range: " + p2pPort + " to " + (p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE));
-        App.initialize();
-        // Start P2P network
-        peerConnectionManager = new PeerConnectionManager(port, p2pPort);
-        BlockchainNetworkHandler networkHandler = new BlockchainNetworkHandler(peerConnectionManager);
-        peerConnectionManager.addNetworkListener(networkHandler);
-        // TODO add network listener peerConnectionManager.
+
+
+        App.initialize(port, p2pPort);
         launch(args);
     }
 

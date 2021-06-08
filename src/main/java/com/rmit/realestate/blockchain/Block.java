@@ -53,7 +53,7 @@ public class Block {
     }
 
     public String calculateHash() {
-        return Hashing.hash(data != null ? data.toString() : null, creator.getName(), prevHash, timestamp);
+        return Hashing.hash(data != null ? data.hash() : null, creator.getName(), prevHash, timestamp);
     }
 
     public SecurityEntity getCreator() {
@@ -70,7 +70,7 @@ public class Block {
      *
      * @return the same block for chaining.
      */
-    protected Block setSignedByAdmin() {
+    public Block setSignedByAdmin() {
         try {
             this.signedHashByAdmin = SecurityEntity.BLOCKCHAIN_ADMIN.sign(hash);
         } catch (GeneralSecurityException e) {
