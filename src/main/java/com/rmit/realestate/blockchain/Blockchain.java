@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Immutable representation of a blockchain
@@ -15,12 +16,12 @@ public class Blockchain {
     private final List<Block> blocks;
 
     public Blockchain(List<Block> blocks) {
-        this.blocks = Collections.unmodifiableList(blocks);
+        this.blocks = blocks;
     }
 
     public Blockchain() {
         // Genesis block
-        this(Collections.singletonList(new Block(null, SecurityEntity.BLOCKCHAIN_ADMIN, null)));
+        this(new ArrayList<>(Collections.singletonList(new Block(null, SecurityEntity.BLOCKCHAIN_ADMIN, null))));
     }
 
     public boolean verify() {
@@ -59,7 +60,15 @@ public class Blockchain {
     }
 
     public List<Block> getBlocks() {
-        return blocks;
+        return Collections.unmodifiableList(blocks);
+    }
+
+    // Exists for debugging to console
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Blockchain.class.getSimpleName() + "[", "]")
+                .add("blocks=" + blocks)
+                .toString();
     }
 
     public Block findBlockWithData(BlockData blockData) {

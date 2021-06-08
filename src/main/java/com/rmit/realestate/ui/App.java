@@ -3,6 +3,7 @@ package com.rmit.realestate.ui;
 import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.network.BlockchainNetworkHandler;
 import com.rmit.realestate.blockchain.network.PeerConnectionManager;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.BuyerDao;
@@ -38,15 +39,19 @@ public class App extends Application {
     private static final SellerDao sellerDao = new SellerDao();
     private static final BuyerDao buyerDao = new BuyerDao();
 
-    @Override
-    public void start(Stage stage) throws IOException {
+    private static void initialize() {
+        if (blockchain != null)
+            throw new IllegalStateException("Already initialized");
         // Security provider
         Security.addProvider(new BouncyCastleProvider());
         // Load private and public signing keys for all our users
         SecurityEntity.load();
         // Start off with an empty blockchain unless we get something better from the network (longer)
         setBlockchain(new Blockchain());
+    }
 
+    @Override
+    public void start(Stage stage) throws IOException {
         // Load UI
         scene = new Scene(loadFXML("Main"));
         stage.setScene(scene);
@@ -148,9 +153,11 @@ public class App extends Application {
         }
         if (port < p2pPort || port > p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE)
             throw new IllegalArgumentException("Port must be within the range of P2P port range: " + p2pPort + " to " + (p2pPort + PeerConnectionManager.PORT_SEARCH_RANGE));
-        new App();
+        App.initialize();
         // Start P2P network
         peerConnectionManager = new PeerConnectionManager(port, p2pPort);
+        BlockchainNetworkHandler networkHandler = new BlockchainNetworkHandler(peerConnectionManager);
+        peerConnectionManager.addNetworkListener(networkHandler);
         // TODO add network listener peerConnectionManager.
         launch(args);
     }

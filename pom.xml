@@ -25,6 +25,18 @@
             <artifactId>kryonet</artifactId>
             <version>2.22.0-RC1</version>
         </dependency>
+        <!--<dependency>
+            <groupId>de.javakaffee</groupId>
+            <artifactId>kryo-serializers</artifactId>
+            <version>0.11</version>
+            <optional>true</optional>
+        </dependency>
+       -->
+        <dependency>
+            <groupId>com.esotericsoftware.minlog</groupId>
+            <artifactId>minlog</artifactId>
+            <version>1.2</version>
+        </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>

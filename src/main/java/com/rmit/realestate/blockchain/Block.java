@@ -2,15 +2,16 @@ package com.rmit.realestate.blockchain;
 
 import java.security.GeneralSecurityException;
 import java.util.Date;
+import java.util.StringJoiner;
 
 public class Block {
-    private final BlockData data;
-    private final SecurityEntity creator;
-    private final String hash;
+    private BlockData data;
+    private SecurityEntity creator;
+    private String hash;
     private String signedHashByAdmin;
-    private final String signedHashByCreator;
-    private final String prevHash;
-    private final long timestamp;
+    private String signedHashByCreator;
+    private String prevHash;
+    private long timestamp;
 
     public Block(BlockData data, SecurityEntity creator, String prevHash) {
         this.data = data;
@@ -28,6 +29,11 @@ public class Block {
 
         // Block needs to now be broadcasted to the network for the admin to approve.
         this.signedHashByAdmin = null;
+    }
+
+    // For serialization
+    private Block() {
+
     }
 
     public BlockData getData() {
@@ -76,6 +82,20 @@ public class Block {
 
     public String getSignedHashByCreator() {
         return signedHashByCreator;
+    }
+
+    // Exists for debugging to console.
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Block.class.getSimpleName() + "[", "]")
+                .add("data=" + data)
+                .add("creator=" + creator)
+                .add("hash='" + hash + "'")
+                .add("signedHashByAdmin='" + signedHashByAdmin + "'")
+                .add("signedHashByCreator='" + signedHashByCreator + "'")
+                .add("prevHash='" + prevHash + "'")
+                .add("timestamp=" + timestamp)
+                .toString();
     }
 
     /**

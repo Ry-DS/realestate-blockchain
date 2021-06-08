@@ -12,7 +12,6 @@ import javafx.beans.value.ObservableIntegerValue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class PeerConnectionManager {
     // Servers only SEND data
@@ -21,14 +20,14 @@ public class PeerConnectionManager {
     public static final int PORT_SEARCH_RANGE = 10;
     private final List<Client> peerReceivers = new ArrayList<>();
     private final Server peerBroadcaster = new Server();
-    private final List<Consumer<Object>> listeners = new ArrayList<>();
+    private final List<P2PListener> listeners = new ArrayList<>();
     // To show in UI
     private final IntegerProperty numOfServerConnections = new SimpleIntegerProperty(0);
     private final IntegerProperty numOfClientConnections = new SimpleIntegerProperty(0);
 
     public PeerConnectionManager(int port, int p2pPort) throws IOException {
         System.out.println("Starting server with port: " + port);
-        Thread serverThread = new Thread(peerBroadcaster, "P2P Network");
+        Thread serverThread = new Thread(peerBroadcaster, "P2P Server");
         serverThread.setDaemon(true);
         serverThread.start();
         try {
@@ -64,10 +63,15 @@ public class PeerConnectionManager {
             while (true) {
                 for (int i = p2pPort; i <= p2pPort + PORT_SEARCH_RANGE; i++) {
                     int finalI = i;
-                    if (i == port || peerReceivers.stream().anyMatch(c -> c.getRemoteAddressTCP().getPort() == finalI))
+                    // if port is self, or we already have a connection to this port...
+                    if (i == port || peerReceivers
+                            .stream()
+                            .anyMatch(c -> c.getRemoteAddressTCP() != null && c.getRemoteAddressTCP()
+                                    .getPort() == finalI))
                         continue;
                     Client client = new Client();
                     client.start();
+                    listeners.forEach(l -> l.onClientJoinAttempt(client));
                     try {
                         client.connect(1, "localhost", i);
                         System.out.println("Found valid connection on port: " + i);
@@ -104,14 +108,16 @@ public class PeerConnectionManager {
     }
 
     void receivedMessage(Object obj) {
-        listeners.forEach(listener -> listener.accept(obj));
+        listeners.forEach(listener -> listener.onIncomingData(obj));
     }
 
-    public void addNetworkListener(Consumer<Object> listener) {
+    public void addNetworkListener(P2PListener listener) {
+        peerBroadcaster.addListener(listener);
         listeners.add(listener);
     }
 
-    public boolean removeNetworkListener(Consumer<Object> listener) {
+    public boolean removeNetworkListener(P2PListener listener) {
+        peerBroadcaster.removeListener(listener);
         return listeners.remove(listener);
     }
 
@@ -127,4 +133,7 @@ public class PeerConnectionManager {
         peerBroadcaster.sendToAllTCP(msg);
     }
 
+    Server getServer() {
+        return peerBroadcaster;
+    }
 }
