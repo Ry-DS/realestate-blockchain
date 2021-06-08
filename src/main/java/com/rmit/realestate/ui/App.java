@@ -9,6 +9,7 @@ import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.SellerDao;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +66,7 @@ public class App extends Application {
             System.out.println("Loaded a blockchain with " + fromFile.getBlocks().size() + " blocks from file.");
             setBlockchain(fromFile);
         }
+        peerConnectionManager.startThreads();
     }
 
     @Override
@@ -117,7 +119,7 @@ public class App extends Application {
         App.blockchain = blockchain;
         sellerDao.updateFromBlockchain(blockchain);
         buyerDao.updateFromBlockchain(blockchain);
-        blockchainSize.set(blockchain.getBlocks().size());
+        Platform.runLater(()->blockchainSize.set(blockchain.getBlocks().size()));
         try {
             blockchainHandler.saveBlockchainToFile(blockchain);
         } catch (IOException ex) {

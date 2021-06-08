@@ -24,12 +24,13 @@ public class PeerConnectionManager {
     // To show in UI
     private final IntegerProperty numOfServerConnections = new SimpleIntegerProperty(0);
     private final IntegerProperty numOfClientConnections = new SimpleIntegerProperty(0);
+    private final int port;
+    private final int p2pPort;
 
     public PeerConnectionManager(int port, int p2pPort) throws IOException {
-        System.out.println("Starting server with port: " + port);
-        Thread serverThread = new Thread(peerBroadcaster, "P2P Server");
-        serverThread.setDaemon(true);
-        serverThread.start();
+        this.port = port;
+        this.p2pPort = p2pPort;
+        System.out.println("Assigning server to port: " + port);
         try {
             peerBroadcaster.bind(port);
         } catch (IOException ex) {
@@ -37,8 +38,6 @@ public class PeerConnectionManager {
             peerBroadcaster.stop();
             throw ex;
         }
-        startPeerFinderThread(port, p2pPort);
-        trackNumberOfServerConnections();
 
 
     }
@@ -62,6 +61,11 @@ public class PeerConnectionManager {
         Thread peerFinder = new Thread(() -> {
             while (true) {
                 for (int i = p2pPort; i <= p2pPort + PORT_SEARCH_RANGE; i++) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     int finalI = i;
                     // if port is self, or we already have a connection to this port...
                     if (i == port || peerReceivers
@@ -69,7 +73,7 @@ public class PeerConnectionManager {
                             .anyMatch(c -> c.getRemoteAddressTCP() != null && c.getRemoteAddressTCP()
                                     .getPort() == finalI))
                         continue;
-                    Client client = new Client();
+                    Client client = new Client(1000000, 1000000);
                     client.start();
                     listeners.forEach(l -> l.onClientJoinAttempt(client));
                     try {
@@ -95,11 +99,7 @@ public class PeerConnectionManager {
                         // ignore
                     }
                 }
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
         peerFinder.setDaemon(true);
@@ -135,5 +135,14 @@ public class PeerConnectionManager {
 
     Server getServer() {
         return peerBroadcaster;
+    }
+
+    public void startThreads() {
+        Thread serverThread = new Thread(peerBroadcaster, "P2P Server");
+        serverThread.setDaemon(true);
+        serverThread.start();
+        startPeerFinderThread(port, p2pPort);
+        trackNumberOfServerConnections();
+
     }
 }
