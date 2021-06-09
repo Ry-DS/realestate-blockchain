@@ -3,9 +3,9 @@ package com.rmit.realestate.ui;
 import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.BlockData;
 import com.rmit.realestate.blockchain.Blockchain;
+import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.blockchain.network.BlockchainNetworkFileHandler;
 import com.rmit.realestate.blockchain.network.PeerConnectionManager;
-import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.SellerDao;
 import javafx.application.Application;
@@ -119,7 +119,7 @@ public class App extends Application {
         App.blockchain = blockchain;
         sellerDao.updateFromBlockchain(blockchain);
         buyerDao.updateFromBlockchain(blockchain);
-        Platform.runLater(()->blockchainSize.set(blockchain.getBlocks().size()));
+        Platform.runLater(() -> blockchainSize.set(blockchain.getBlocks().size()));
         try {
             blockchainHandler.saveBlockchainToFile(blockchain);
         } catch (IOException ex) {

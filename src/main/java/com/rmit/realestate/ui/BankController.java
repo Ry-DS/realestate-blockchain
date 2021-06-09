@@ -2,14 +2,13 @@ package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Buyer;
-import com.rmit.realestate.data.BuyerDao;
-import com.rmit.realestate.data.Seller;
-import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
@@ -51,9 +50,9 @@ public class BankController {
 
 
     public void initialize() {
-        addressProperty.setItems(App.getBuyerDao().getBuyers());
+        addressProperty.setItems(App.getBuyerDao().getPendingBuyers());
 
-        bankTable.setItems(App.getBuyerDao().getBuyers());
+        bankTable.setItems(App.getBuyerDao().getPendingBuyers());
         fullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         DOB.setCellValueFactory(new PropertyValueFactory<>("dob"));
         // TODO possibly add propertyAddress

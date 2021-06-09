@@ -1,12 +1,9 @@
 package com.rmit.realestate.ui;
 
 import com.rmit.realestate.blockchain.Block;
-import com.rmit.realestate.blockchain.Blockchain;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Buyer;
-import com.rmit.realestate.data.BuyerDao;
 import com.rmit.realestate.data.Seller;
-import com.rmit.realestate.data.SellerDao;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +22,6 @@ import javafx.util.converter.NumberStringConverter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 
@@ -96,7 +92,7 @@ public class BuyerController {
 
         Block sellerBlock = App.getBlockchain().findBlockWithData(addressPropertyField.getValue());
         String errMsg = null;
-        System.out.println(new Date().getTime());
+
         if (fullName.isBlank()) {
             errMsg = "Full-name not given";
         } else if (dobTime <= 0) {
@@ -115,7 +111,7 @@ public class BuyerController {
             errMsg = "Loan Amount not given";
         } else {
             // at this point, all fields are filled, safe to give id.
-            Buyer buyer = new Buyer(fullName, dob.toEpochDay(), currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
+            Buyer buyer = new Buyer(fullName, dobTime, currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
             if (App.getBuyerDao().addBuyer(buyer, OWNER)) {
                 loanIdLabel.setTextFill(Color.GREEN);
                 loanIdLabel.setText("Submitted - " + "Loan Application Id: " + buyer.getLoanApplicationId());

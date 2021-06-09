@@ -7,6 +7,8 @@ import com.rmit.realestate.blockchain.Hashing;
 import com.rmit.realestate.blockchain.SecurityEntity;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Buyer extends BlockPointer {
     private String fullName;
@@ -17,7 +19,6 @@ public class Buyer extends BlockPointer {
     private int loanAmount;
     private int loanApplicationId = -1;
 
-    // TODO Change String dob back to Date dob in Constructor Parameter
     public Buyer(String fullName, long dob, String currentAddress, String contactNumber, String employerName, int loanAmount, Block sellerBlock) {
         super(sellerBlock);
         this.loanAmount = loanAmount;
@@ -83,19 +84,20 @@ public class Buyer extends BlockPointer {
     @Override
     public boolean verify(Blockchain blockchain, Block container) {
         if (fullName == null || dob >= new Date().getTime() || currentAddress == null || contactNumber == null
-                || employerName == null || loanAmount <= 0 || loanApplicationId < 0
+                || employerName == null || loanAmount <= 0 || loanApplicationId <= 0
                 || getHashTarget() == null || container.getCreator() != SecurityEntity.BUYER)
             return false;
-        String propertyAddress = getPropertyAddress(blockchain);
-        if (propertyAddress == null)
+        Block sellerBlock = getBlockPointer(blockchain);
+        if (sellerBlock == null || !(sellerBlock.getData() instanceof Seller))
             return false;
-        // check existing buyer
-        for (Block block : blockchain.getBlocks()) {
-            if (block.getData() instanceof Buyer) {
-                Buyer otherBuyer = (Buyer) block.getData();
-                if (otherBuyer.getHashTarget().equals(getHashTarget()) && block != container)
-                    return false;
-            }
+        // Used to get approved and pending buyers.
+        BuyerDao buyerDao = new BuyerDao();
+        buyerDao.updateFromBlockchain(blockchain);
+        // If this buyer is in the middle of a sale, or completed a sale,
+        // make sure no other buyer is also on the same sale.
+        if (buyerDao.containsBuyer(this)) {
+            return Stream.of(buyerDao.getApprovedBuyers(), buyerDao.getPendingBuyers()).flatMap(List::stream)
+                    .noneMatch(b -> b.getHashTarget().equals(getHashTarget()) && b != this);
         }
         return true;
     }

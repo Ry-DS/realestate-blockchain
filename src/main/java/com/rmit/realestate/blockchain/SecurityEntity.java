@@ -1,18 +1,18 @@
 package com.rmit.realestate.blockchain;
 
+import com.rmit.realestate.ui.App;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.SignatureException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -20,16 +20,18 @@ public enum SecurityEntity {
 
     SELLER("seller"), BUYER("bank"), AUTHORITY("authority"), BANK("bank"),
     // Use this to sign new blocks to the chain (proof by authority)
-    BLOCKCHAIN_ADMIN("blockchain-admin");
+    // Completely disable signing blocks if we aren't an admin
+    // In a real system we would not ship the private key in the application at all.
+    BLOCKCHAIN_ADMIN("blockchain-admin", App.isAdmin());
 
     final String name;
     final KeyPair keyPair;
 
 
-    SecurityEntity(String name) {
+    SecurityEntity(String name, boolean loadPrivate) {
         this.name = name;
         try {
-            keyPair = loadKeyPair();
+            keyPair = loadKeyPair(loadPrivate);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("Cannot continue without key: " + this.getName());
@@ -37,9 +39,14 @@ public enum SecurityEntity {
 
     }
 
+    SecurityEntity(String name) {
+        this(name, true);
+    }
+
     public static void load() {
         // load using static context
-        System.out.println("Loaded " + SecurityEntity.values().length + " keys.");
+        System.out.println("Loaded " +
+                Stream.of(SecurityEntity.values()).filter(s -> s.keyPair.getPrivate() != null).count() + " private keys.");
     }
 
     public String getName() {
@@ -79,17 +86,21 @@ public enum SecurityEntity {
 
     // Source: https://blog.jonm.dev/posts/rsa-public-key-cryptography-in-java/
     // https://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
-    private KeyPair loadKeyPair() throws IOException, GeneralSecurityException {
+    private KeyPair loadKeyPair(boolean loadPrivate) throws IOException, GeneralSecurityException {
         assert keyPair == null;
         KeyFactory kf = KeyFactory.getInstance("RSA");
         byte[] keyBytes;
+        PrivateKey priv = null;
 
-        keyBytes = getClass().getResourceAsStream(getPrivateKeyPath()).readAllBytes();
-        // private
-        PKCS8EncodedKeySpec privSpec =
-                new PKCS8EncodedKeySpec(keyBytes);
 
-        PrivateKey priv = kf.generatePrivate(privSpec);
+        if (loadPrivate) {
+            keyBytes = getClass().getResourceAsStream(getPrivateKeyPath()).readAllBytes();
+            // private
+            PKCS8EncodedKeySpec privSpec =
+                    new PKCS8EncodedKeySpec(keyBytes);
+
+            priv = kf.generatePrivate(privSpec);
+        }
         // public
         keyBytes = getClass().getResourceAsStream(getPublicKeyPath()).readAllBytes();
         X509EncodedKeySpec pubSpec =

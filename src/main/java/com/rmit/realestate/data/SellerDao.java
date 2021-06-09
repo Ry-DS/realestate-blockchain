@@ -7,6 +7,9 @@ import com.rmit.realestate.ui.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 // TODO link with blockchain
 public class SellerDao implements BlockchainDao {
     private final ObservableList<Seller> pendingSellers = FXCollections.observableArrayList();
@@ -50,21 +53,24 @@ public class SellerDao implements BlockchainDao {
         for (Block sellerBlock : blockchain.getBlocks()) {
             if (sellerBlock.getData() instanceof Seller) {
                 Seller seller = (Seller) sellerBlock.getData();
-                boolean foundDecision = false;
+                // Whether this seller was approved by the authority.
+                ApplicationStatus sellerDecision;
                 // Try work out the approved/deny status of this seller
-                for (Block decisionBlock : blockchain.getBlocks()) {
-                    if (decisionBlock.getData() instanceof EntityDecision){
-                        EntityDecision decision= (EntityDecision) decisionBlock.getData();
-                        // Found a decision for this block, lets see what it is
-                        if(decision.getHashTarget().equals(sellerBlock.getHash())){
-                            foundDecision=true;
-                            if(decision.getStatus()==ApplicationStatus.APPROVED)
-                                approvedSellers.add(seller);
-                            // else we ignore denied sellers.
-                        }
-                    }
-                }
-                if (!foundDecision)
+                sellerDecision = blockchain.getBlocks().stream()
+                        .filter(b -> b.getData() instanceof EntityDecision)
+                        .map(b -> (EntityDecision) b.getData())
+                        .filter(b -> b.getHashTarget().equals(sellerBlock.getHash()))
+                        .map(EntityDecision::getStatus)
+                        .findFirst().orElse(null);
+                if (sellerDecision == ApplicationStatus.APPROVED) {
+                    // Try work out if there's already a buy in progress.
+                    BuyerDao buyerDao = new BuyerDao();
+                    buyerDao.updateFromBlockchain(blockchain);
+                    // If a buy isn't currently pending or approved for this seller, we can add it to approved for other buyers
+                    if (Stream.of(buyerDao.getApprovedBuyers(), buyerDao.getPendingBuyers()).flatMap(List::stream)
+                            .noneMatch(b -> b.getHashTarget().equals(sellerBlock.getHash())))
+                        approvedSellers.add(seller);
+                } else if (sellerDecision == null)
                     pendingSellers.add(seller);
             }
         }

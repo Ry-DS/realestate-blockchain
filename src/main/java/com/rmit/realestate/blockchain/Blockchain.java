@@ -1,10 +1,6 @@
 package com.rmit.realestate.blockchain;
 
-import com.rmit.realestate.data.Seller;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
@@ -20,8 +16,8 @@ public class Blockchain {
     }
 
     public Blockchain() {
-        // Genesis block
-        this(new ArrayList<>(Collections.singletonList(new Block(null, SecurityEntity.BLOCKCHAIN_ADMIN, null))));
+        // Genesis block. We can only use ArrayList class here, since that's serializable by kryo
+        this(new ArrayList<>(Collections.singletonList(new Block(null, null, null))));
     }
 
     public boolean verify() {
@@ -56,7 +52,13 @@ public class Blockchain {
             }
             // Verify data to make sure its clear of defects
             if (!currentBlock.getData().verify(this, currentBlock)) {
-                System.err.println("Data verification failed on " + i);
+                System.err.println("Data verification failed on " + i + ", datatype: "
+                        + currentBlock.getData().getClass().getSimpleName());
+                return false;
+            }
+            // Verify a block didn't happen in the past of the previous block
+            if (currentBlock.getTimestamp() < previousBlock.getTimestamp()) {
+                System.err.println("Block " + i + " timestamp is invalid.");
                 return false;
             }
 

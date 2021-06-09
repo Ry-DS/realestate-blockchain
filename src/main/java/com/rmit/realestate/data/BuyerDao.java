@@ -7,13 +7,10 @@ import com.rmit.realestate.ui.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 // TODO link with blockchain
 public class BuyerDao implements BlockchainDao {
-    private final ObservableList<Buyer> buyers = FXCollections.observableArrayList();
+    private final ObservableList<Buyer> pendingBuyers = FXCollections.observableArrayList();
+    private final ObservableList<Buyer> approvedBuyers = FXCollections.observableArrayList();
 
     /**
      * Adds a seller and returns the permit id.
@@ -25,8 +22,12 @@ public class BuyerDao implements BlockchainDao {
         return App.publishBlock(buyer, entity);
     }
 
-    public ObservableList<Buyer> getBuyers() {
-        return FXCollections.unmodifiableObservableList(buyers);
+    public ObservableList<Buyer> getPendingBuyers() {
+        return FXCollections.unmodifiableObservableList(pendingBuyers);
+    }
+
+    public ObservableList<Buyer> getApprovedBuyers() {
+        return FXCollections.unmodifiableObservableList(approvedBuyers);
     }
 
     public boolean approve(Buyer buyer, SecurityEntity entity) {
@@ -40,19 +41,26 @@ public class BuyerDao implements BlockchainDao {
 
     }
 
-    // TODO
+    // Populate this DAO from a blockchain. DO NOT use static App instance here, since this is called for verification
     @Override
     public void updateFromBlockchain(Blockchain blockchain) {
-        buyers.clear();
+        pendingBuyers.clear();
         for (Block buyerBlock : blockchain.getBlocks()) {
             if (buyerBlock.getData() instanceof Buyer) {
                 Buyer buyer = (Buyer) buyerBlock.getData();
                 // Check if there's a decision for this  buyer. We don't store them if there's a decision.
-                boolean foundDecisionBlock = blockchain.getBlocks().stream().anyMatch(decisionBlock ->
-                        decisionBlock.getData() instanceof EntityDecision && ((EntityDecision) decisionBlock.getData()).getHashTarget().equals(buyerBlock.getHash()));
-                if (!foundDecisionBlock)
-                    buyers.add(buyer);
+                ApplicationStatus status = blockchain.getBlocks().stream().filter(decisionBlock ->
+                        decisionBlock.getData() instanceof EntityDecision && ((EntityDecision) decisionBlock.getData()).getHashTarget().equals(buyerBlock.getHash()))
+                        .map(b -> ((EntityDecision) b.getData()).getStatus()).findFirst().orElse(null);
+                if (status == ApplicationStatus.APPROVED)
+                    approvedBuyers.add(buyer);
+                else if (status == null)
+                    pendingBuyers.add(buyer);
             }
         }
+    }
+
+    public boolean containsBuyer(Buyer buyer) {
+        return approvedBuyers.contains(buyer) || pendingBuyers.contains(buyer);
     }
 }

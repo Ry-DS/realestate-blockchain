@@ -21,7 +21,8 @@ public class Block {
 
         this.hash = calculateHash();
         try {
-            this.signedHashByCreator = creator.sign(hash);
+            if (creator != null)
+                this.signedHashByCreator = creator.sign(hash);
         } catch (GeneralSecurityException ex) {
             ex.printStackTrace();
             throw new RuntimeException("Failed to sign block for creator: " + creator);
@@ -53,7 +54,7 @@ public class Block {
     }
 
     public String calculateHash() {
-        return Hashing.hash(data != null ? data.hash() : null, creator.getName(), prevHash, timestamp);
+        return Hashing.hash(data != null ? data.hash() : null, creator != null ? creator.getName() : null, prevHash, timestamp);
     }
 
     public SecurityEntity getCreator() {
