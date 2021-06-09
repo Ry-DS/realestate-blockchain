@@ -89,7 +89,8 @@ public class BlockchainNetworkFileHandler extends P2PListener {
                 // Add self to viewed list
                 data = packet.getData();
                 packet.addPort(pcm.getPort());
-                pcm.broadcastMessage(packet);
+                // TODO disable bounce functionality. It isn't very stable
+                //   pcm.broadcastMessage(packet);
             } else data = null;
 
         } else data = o;

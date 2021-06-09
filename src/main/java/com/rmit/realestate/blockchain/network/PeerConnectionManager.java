@@ -66,7 +66,7 @@ public class PeerConnectionManager {
             Object threadLock = new Object();
             while (true) {
                 boolean freePort = false;
-                for (int i = port - 1; i <= port + 1; i++) {
+                for (int i = p2pPort; i <= p2pPort + PORT_SEARCH_RANGE; i++) {
                     int finalI = i;
                     // True if there is still a port we need to try connect to.
 

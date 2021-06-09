@@ -1,13 +1,14 @@
 package com.rmit.realestate.blockchain.network;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A packet that carries some data and a bounce count.
- * Until the bounce count equals 0, this packet should be resent on the network.
- * Once a client receives a bounce packet with 0 bounces, it should disregard it.
+ * A packet that carries some data a list of visitors.
+ * If a client receives a packet and its on the visitor list, it should disregard the packet.
+ * A client should also update the visitor list with themselves before they pass along this packet to others.
  * IMMUTABLE, final is not supported in serialized classes
  */
 public class BouncePacket<T> {
@@ -32,6 +33,6 @@ public class BouncePacket<T> {
     }
 
     public Collection<Integer> getViewed() {
-        return viewed;
+        return Collections.unmodifiableSet(viewed);
     }
 }
