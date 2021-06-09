@@ -90,7 +90,7 @@ public class PeerConnectionManager {
                         client.addListener(new Listener() {
                             @Override
                             public void received(Connection connection, Object object) {
-                                receivedMessage(object, connection.getRemoteAddressTCP());
+                                receivedMessage(object);
                             }
 
                             @Override
@@ -128,8 +128,8 @@ public class PeerConnectionManager {
         peerFinder.setName("Peer Finder");
     }
 
-    void receivedMessage(Object obj, InetSocketAddress conn) {
-        listeners.forEach(listener -> listener.onIncomingData(obj, conn));
+    void receivedMessage(Object obj) {
+        listeners.forEach(listener -> listener.onIncomingData(obj));
     }
 
     public void addNetworkListener(P2PListener listener) {

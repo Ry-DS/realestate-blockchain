@@ -112,6 +112,7 @@ public class BuyerController {
         } else {
             // at this point, all fields are filled, safe to give id.
             Buyer buyer = new Buyer(fullName, dobTime, currentAddress, contactNumber, employerName, loanAmount, sellerBlock);
+            loanIdLabel.setText("Submitting...");
             if (App.getBuyerDao().addBuyer(buyer, OWNER)) {
                 loanIdLabel.setTextFill(Color.GREEN);
                 loanIdLabel.setText("Submitted - " + "Loan Application Id: " + buyer.getLoanApplicationId());

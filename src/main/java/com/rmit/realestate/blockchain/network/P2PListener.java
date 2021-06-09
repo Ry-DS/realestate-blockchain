@@ -17,5 +17,5 @@ public abstract class P2PListener extends Listener {
 
     public abstract void onServerConnect(Connection connection);
 
-    public abstract void onIncomingData(Object obj, InetSocketAddress conn);
+    public abstract void onIncomingData(Object obj);
 }

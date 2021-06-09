@@ -108,7 +108,7 @@ public class Block {
     public boolean verifySignatures() {
         try {
             boolean creatorVerified = creator.verify(hash, signedHashByCreator);
-            boolean adminVerified = SecurityEntity.BLOCKCHAIN_ADMIN.verify(hash, signedHashByAdmin);
+            boolean adminVerified = signedHashByAdmin != null && SecurityEntity.BLOCKCHAIN_ADMIN.verify(hash, signedHashByAdmin);
             return adminVerified && creatorVerified;
         } catch (Exception e) {
             e.printStackTrace();

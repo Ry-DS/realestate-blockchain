@@ -74,36 +74,42 @@ public class AuthorityController {
     }
 
     public void accept() {
+        message.setTextFill(Color.RED);
         Seller seller = addressProperty.getValue();
         String addressProperty = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
 
         if (addressProperty == null || addressProperty.isBlank()) {
-            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
         } else {
-            message.setTextFill(Color.GREEN);
-            message.setText(seller.getOwnerVendorName() + "'s property has been accepted for sale");
-            authorityTable.refresh();
-            this.addressProperty.getSelectionModel().clearSelection();
-            App.getSellerDao().approve(seller, OWNER);
+            message.setText("Submitting...");
+            if (App.getSellerDao().approve(seller, OWNER)) {
+                message.setTextFill(Color.GREEN);
+                message.setText(seller.getOwnerVendorName() + "'s property has been accepted for sale");
+                authorityTable.refresh();
+                this.addressProperty.getSelectionModel().clearSelection();
+            } else {
+                message.setText("Failed to verify block on blockchain.");
+            }
 
         }
     }
 
     public void decline() {
+        message.setTextFill(Color.RED);
         Seller seller = addressProperty.getValue();
-        String addressProperty = seller != null ? this.addressProperty.getValue().getPropertyAddress() : null;
+        String addressProperty = seller != null ? seller.getPropertyAddress() : null;
         if (addressProperty == null || addressProperty.isBlank()) {
-            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
+            return;
         }
-
-        if (addressProperty != null) {
+        message.setText("Submitting...");
+        if (App.getSellerDao().disapprove(seller, OWNER)) {
             message.setTextFill(Color.GREEN);
             message.setText(seller.getOwnerVendorName() + "'s property has been declined for sale");
             authorityTable.refresh();
             this.addressProperty.getSelectionModel().clearSelection();
-            App.getSellerDao().disapprove(seller, OWNER);
+        }else{
+            message.setText("Failed to verify block on blockchain.");
         }
     }
 

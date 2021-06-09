@@ -22,8 +22,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Security;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * JavaFX App
@@ -86,22 +84,13 @@ public class App extends Application {
 
     /**
      * Attempts to publish this block to the blockchain, sending it to the network to be verified.
+     * This is a blocking operation, and won't return unless there's a timeout, or the block has successfully been added.
      *
      * @return true if successful, false otherwise
      */
     public static boolean publishBlock(BlockData data, SecurityEntity creator) {
         Block block = new Block(data, creator, blockchain.getBlocks().get(blockchain.getBlocks().size() - 1).getHash());
-        List<Block> tmpBlockList = new ArrayList<>(blockchain.getBlocks());
-        tmpBlockList.add(block);
-        Blockchain tempBlockchain = new Blockchain(tmpBlockList);
-        if (!data.verify(tempBlockchain, block)) return false;
-        System.out.println("TODO");
-        // TODO shouldn't do this.
-        block.setSignedByAdmin();
-        setBlockchain(tempBlockchain);
-        return true;
-        // Ready to send to network for authority to sign.
-        // TODO send
+        return blockchainHandler.broadcastAndAddBlockToNetwork(block, blockchain);
     }
 
     static void setRoot(String fxml) throws IOException {

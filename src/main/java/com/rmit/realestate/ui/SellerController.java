@@ -33,34 +33,34 @@ public class SellerController {
     private final Color error = Color.web("#ff1c1c");
 
     public void submit() {
-
+        permitId.setTextFill(error);
         String propertyAddress = property_address_field.getText();
         String owner = owner_vendor_name_field.getText();
         String license = license_number_field.getText();
 
         if (propertyAddress == null || propertyAddress.isBlank()) {
-            permitId.setTextFill(error);
+
             permitId.setText("Address not given");
             return;
         }
         if (owner == null || owner.isBlank()) {
-            permitId.setTextFill(error);
+
             permitId.setText("Owner/Vendor not given");
             return;
         }
         if (license == null || !license.matches("^L[0]+\\d$")) {
-            permitId.setTextFill(error);
+
             permitId.setText("Licence Number invalid");
             return;
         }
         if (selectedFile == null) {
-            permitId.setTextFill(error);
             permitId.setText("No File Selected");
             return;
         }
         // successful
 
         Seller seller = new Seller(propertyAddress, owner, license, selectedFile);
+        permitId.setText("Submitting...");
         if (App.getSellerDao().addSeller(seller, OWNER)) {
             permitId.setTextFill(Color.GREEN);
             permitId.setText("Submitted - Permit Application Id: " + seller.getPermitId());

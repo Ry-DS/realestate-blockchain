@@ -99,19 +99,19 @@ public class BankController {
     }
 
     public void decline() {
+        message.setTextFill(Color.RED);
         Buyer buyer = addressProperty.getValue();
 
         if (buyer == null) {
-            message.setTextFill(Color.RED);
             message.setText("Please Select a Property");
             return;
         }
-
-        message.setTextFill(Color.GREEN);
-        message.setText(buyer.getFullName() + "'s loan has been declined");
-        bankTable.refresh();
-        this.addressProperty.getSelectionModel().clearSelection();
-        App.getBuyerDao().disapprove(buyer, OWNER);
+        if (App.getBuyerDao().disapprove(buyer, OWNER)) {
+            message.setTextFill(Color.GREEN);
+            message.setText(buyer.getFullName() + "'s loan has been declined");
+            bankTable.refresh();
+            this.addressProperty.getSelectionModel().clearSelection();
+        } else message.setText("There was an issue verifying the block onto the blockchain.");
 
     }
 }
