@@ -75,7 +75,7 @@ public class Blockchain {
     @Override
     public String toString() {
         return new StringJoiner(", ", Blockchain.class.getSimpleName() + "[", "]")
-                .add("blocks=" + blocks)
+                .add("blocksLength=" + blocks.size())
                 .toString();
     }
 

@@ -72,7 +72,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load UI
-        scene = new Scene(loadFXML("Main"));
+        scene = new Scene(loadFXML("login"));
         stage.setScene(scene);
         App.stage = stage;
         stage.show();

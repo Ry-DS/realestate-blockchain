@@ -4,6 +4,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import java.net.InetSocketAddress;
+
 public abstract class P2PListener extends Listener {
 
     @Override
@@ -15,5 +17,5 @@ public abstract class P2PListener extends Listener {
 
     public abstract void onServerConnect(Connection connection);
 
-    public abstract void onIncomingData(Object obj);
+    public abstract void onIncomingData(Object obj, InetSocketAddress conn);
 }

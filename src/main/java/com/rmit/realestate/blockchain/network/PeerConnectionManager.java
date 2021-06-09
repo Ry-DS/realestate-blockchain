@@ -8,8 +8,10 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableIntegerValue;
+import org.bouncycastle.util.Arrays;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class PeerConnectionManager {
     // Clients we connect to are for RECEIVING data only
     // From this we make a rudimentary P2P network (not scalable)
     public static final int PORT_SEARCH_RANGE = 10;
+    private static final int BUFFER_SIZE = 10000000;
     private final List<Client> peerReceivers = new ArrayList<>();
     private final Server peerBroadcaster = new Server();
     private final List<P2PListener> listeners = new ArrayList<>();
@@ -26,6 +29,7 @@ public class PeerConnectionManager {
     private final IntegerProperty numOfClientConnections = new SimpleIntegerProperty(0);
     private final int port;
     private final int p2pPort;
+
 
     public PeerConnectionManager(int port, int p2pPort) throws IOException {
         this.port = port;
@@ -59,21 +63,22 @@ public class PeerConnectionManager {
     private void startPeerFinderThread(int port, int p2pPort) {
         // Handles connecting to new clients to recieve data from.
         Thread peerFinder = new Thread(() -> {
+            Object threadLock = new Object();
             while (true) {
-                for (int i = p2pPort; i <= p2pPort + PORT_SEARCH_RANGE; i++) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                boolean freePort = false;
+                for (int i = port - 1; i <= port + 1; i++) {
                     int finalI = i;
+                    // True if there is still a port we need to try connect to.
+
                     // if port is self, or we already have a connection to this port...
                     if (i == port || peerReceivers
                             .stream()
                             .anyMatch(c -> c.getRemoteAddressTCP() != null && c.getRemoteAddressTCP()
                                     .getPort() == finalI))
                         continue;
-                    Client client = new Client(1000000, 1000000);
+                    // There's a port with no connection still
+                    freePort = true;
+                    Client client = new Client(BUFFER_SIZE, BUFFER_SIZE);
                     client.start();
                     listeners.forEach(l -> l.onClientJoinAttempt(client));
                     try {
@@ -85,7 +90,7 @@ public class PeerConnectionManager {
                         client.addListener(new Listener() {
                             @Override
                             public void received(Connection connection, Object object) {
-                                receivedMessage(object);
+                                receivedMessage(object, connection.getRemoteAddressTCP());
                             }
 
                             @Override
@@ -93,12 +98,28 @@ public class PeerConnectionManager {
                                 peerReceivers.remove(client);
                                 Platform.runLater(() -> numOfClientConnections.set(peerReceivers.size()));
                                 client.stop();
+                                synchronized (threadLock) {
+                                    // Wake up, there is a chance you can connect to new peers
+                                    threadLock.notify();
+                                }
                             }
                         });
                     } catch (IOException ex) {
-                        // ignore
+                        // clean up client and ignore
+                        client.stop();
                     }
                 }
+                if (!freePort) {
+                    try {
+                        System.out.println("Connected to Max Peers, waiting for a disconnect.");
+                        synchronized (threadLock) {
+                            threadLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
             }
         });
@@ -107,8 +128,8 @@ public class PeerConnectionManager {
         peerFinder.setName("Peer Finder");
     }
 
-    void receivedMessage(Object obj) {
-        listeners.forEach(listener -> listener.onIncomingData(obj));
+    void receivedMessage(Object obj, InetSocketAddress conn) {
+        listeners.forEach(listener -> listener.onIncomingData(obj, conn));
     }
 
     public void addNetworkListener(P2PListener listener) {
@@ -144,5 +165,9 @@ public class PeerConnectionManager {
         startPeerFinderThread(port, p2pPort);
         trackNumberOfServerConnections();
 
+    }
+
+    public int getPort() {
+        return port;
     }
 }
