@@ -97,7 +97,7 @@ public class SellerController {
 
     @FXML
     private void cancel() throws IOException {
-        App.setRoot("Main");
+        App.setRoot("login");
     }
 
     @FXML

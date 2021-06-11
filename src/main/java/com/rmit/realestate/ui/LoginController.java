@@ -58,7 +58,7 @@ public class LoginController {
     private void login() throws IOException {
         String username = userNameField.getText();
         String password = passwordField.getText();
-        if (username.equals("admin") && password.equals("pass")) {
+        if (App.isAdmin() && username.equals("admin") && password.equals("pass")) {
             App.setRoot("Main");
         } else if (username.equals("seller") && password.equals("pass")) {
             App.setRoot("seller");

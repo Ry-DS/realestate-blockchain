@@ -81,7 +81,7 @@ public class BankController {
 
 
     public void cancel() throws IOException {
-        App.setRoot("Main");
+        App.setRoot("login");
     }
 
     public void accept() {
