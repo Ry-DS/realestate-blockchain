@@ -74,7 +74,7 @@ public class BlockchainNetworkFileHandler extends P2PListener {
     // When a new peer connects, send them our copy of the blockchain.
     @Override
     public void onServerConnect(Connection connection) {
-        connection.sendTCP(new BouncePacket<>(App.getBlockchain(), pcm.getPort()));
+        connection.sendTCP(App.getBlockchain());
     }
 
     // When we receive a message from one of the clients we're connected to.
