@@ -1,5 +1,6 @@
 package com.rmit.realestate.ui;
 
+import com.rmit.realestate.blockchain.Block;
 import com.rmit.realestate.blockchain.SecurityEntity;
 import com.rmit.realestate.data.Seller;
 import javafx.application.Platform;
@@ -13,6 +14,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class SellerController {
     private final SecurityEntity OWNER = SecurityEntity.SELLER;
@@ -64,6 +68,19 @@ public class SellerController {
         if (App.getSellerDao().addSeller(seller, OWNER)) {
             permitId.setTextFill(Color.GREEN);
             permitId.setText("Submitted - Permit Application Id: " + seller.getPermitId());
+            // Save file in a folder with block hash. We don't explore syncing files like this in the blockchain
+            // There are existing file blockchain impl. that can handle this.
+            Block sellerBlock = App.getBlockchain().getBlocks().get(App.getBlockchain().getBlocks().size() - 1);
+            try {
+                File newFile = new File("pdfs");
+                newFile.mkdir();
+                newFile = new File(newFile, sellerBlock.getHash() + ".pdf");
+                newFile.createNewFile();
+                Files.copy(Paths.get(selectedFile.toURI()), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                System.err.println("Failed to save PDF");
+                exception.printStackTrace();
+            }
             submitClear();
         } else {
             permitId.setText("Failed to verify block on blockchain.");
