@@ -44,39 +44,11 @@ public class BlockchainNetworkFileHandler extends P2PListener {
         pcm.addNetworkListener(this);
 
     }
-
-    private void registerClasses(Kryo kryo) {
-        // Blockchain
-        kryo.register(Blockchain.class);
-        kryo.register(Block.class);
-        // Blockchain Data
-        kryo.register(Seller.class);
-        kryo.register(Buyer.class);
-        kryo.register(EntityDecision.class);
-        // Packets
-        kryo.register(BouncePacket.class);
-        // Util
-        kryo.register(ArrayList.class);
-        kryo.register(HashSet.class);
-        kryo.register(SecurityEntity.class);
-        kryo.register(ApplicationStatus.class);
-        // Not supported by this version
-        // UnmodifiableCollectionsSerializer.registerSerializers(kryo);
-    }
-
-    // When we connect to another peer to listen from.
-    // Warning: Connection hasn't been made yet to receive data.
-    @Override
-    public void onClientJoinAttempt(Client client) {
-        registerClasses(client.getKryo());
-    }
-
     // When a new peer connects, send them our copy of the blockchain.
     @Override
     public void onServerConnect(Connection connection) {
         connection.sendTCP(App.getBlockchain());
     }
-
     // When we receive a message from one of the clients we're connected to.
     @Override
     public void onIncomingData(Object o) {
@@ -199,4 +171,32 @@ public class BlockchainNetworkFileHandler extends P2PListener {
         // Check whether the new block was added while we were waiting.
         return App.getBlockchain().getBlocks().stream().anyMatch(b -> b.getHash().equals(block.getHash()));
     }
+
+    private void registerClasses(Kryo kryo) {
+        // Blockchain
+        kryo.register(Blockchain.class);
+        kryo.register(Block.class);
+        // Blockchain Data
+        kryo.register(Seller.class);
+        kryo.register(Buyer.class);
+        kryo.register(EntityDecision.class);
+        // Packets
+        kryo.register(BouncePacket.class);
+        // Util
+        kryo.register(ArrayList.class);
+        kryo.register(HashSet.class);
+        kryo.register(SecurityEntity.class);
+        kryo.register(ApplicationStatus.class);
+        // Not supported by this version
+        // UnmodifiableCollectionsSerializer.registerSerializers(kryo);
+    }
+
+    // When we connect to another peer to listen from.
+    // Warning: Connection hasn't been made yet to receive data.
+    @Override
+    public void onClientJoinAttempt(Client client) {
+        registerClasses(client.getKryo());
+    }
+
+
 }

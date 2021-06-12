@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import java.util.List;
 import java.util.stream.Stream;
 
-// TODO link with blockchain
 public class SellerDao implements BlockchainDao {
     private final ObservableList<Seller> pendingSellers = FXCollections.observableArrayList();
     private final ObservableList<Seller> approvedSellers = FXCollections.observableArrayList();
@@ -24,10 +23,6 @@ public class SellerDao implements BlockchainDao {
         return App.publishBlock(seller, entity);
     }
 
-    public ObservableList<Seller> getPendingSellers() {
-        return FXCollections.unmodifiableObservableList(pendingSellers);
-    }
-
 
     public boolean approve(Seller seller, SecurityEntity entity) {
         EntityDecision decision = new EntityDecision(App.getBlockchain().findBlockWithData(seller), ApplicationStatus.APPROVED);
@@ -38,11 +33,6 @@ public class SellerDao implements BlockchainDao {
         EntityDecision decision = new EntityDecision(App.getBlockchain().findBlockWithData(seller), ApplicationStatus.DENIED);
         return App.publishBlock(decision, entity);
 
-    }
-
-    public ObservableList<Seller> getApprovedSellers() {
-
-        return FXCollections.unmodifiableObservableList(approvedSellers);
     }
 
     @Override
@@ -74,5 +64,14 @@ public class SellerDao implements BlockchainDao {
                     pendingSellers.add(seller);
             }
         }
+    }
+
+    public ObservableList<Seller> getApprovedSellers() {
+
+        return FXCollections.unmodifiableObservableList(approvedSellers);
+    }
+
+    public ObservableList<Seller> getPendingSellers() {
+        return FXCollections.unmodifiableObservableList(pendingSellers);
     }
 }

@@ -34,40 +34,6 @@ public class Buyer extends BlockPointer {
 
     }
 
-    public int getLoanApplicationId() {
-        return loanApplicationId;
-    }
-
-    public void setLoanApplicationId(int loanApplicationId) {
-        this.loanApplicationId = loanApplicationId;
-    }
-
-    public int getLoanAmount() {
-        return loanAmount;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    // TODO Change String dob back to Date dob
-    public long getDob() {
-        return dob;
-    }
-
-    public String getCurrentAddress() {
-        return currentAddress;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public String getEmployerName() {
-        return employerName;
-    }
-
-
     public String getPropertyAddress(Blockchain blockchain) {
         BlockData data = getBlockPointer(blockchain).getData();
         if (!(data instanceof Seller))
@@ -106,4 +72,39 @@ public class Buyer extends BlockPointer {
     public String hash() {
         return Hashing.hash(super.hash(), fullName, dob, currentAddress, contactNumber, employerName, loanAmount);
     }
+
+    public int getLoanApplicationId() {
+        return loanApplicationId;
+    }
+
+    public void setLoanApplicationId(int loanApplicationId) {
+        this.loanApplicationId = loanApplicationId;
+    }
+
+    public int getLoanAmount() {
+        return loanAmount;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    // TODO Change String dob back to Date dob
+    public long getDob() {
+        return dob;
+    }
+
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getEmployerName() {
+        return employerName;
+    }
+
+
 }
