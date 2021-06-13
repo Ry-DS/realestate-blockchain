@@ -44,11 +44,13 @@ public class BlockchainNetworkFileHandler extends P2PListener {
         pcm.addNetworkListener(this);
 
     }
+
     // When a new peer connects, send them our copy of the blockchain.
     @Override
     public void onServerConnect(Connection connection) {
-        connection.sendTCP(App.getBlockchain());
+        connection.sendTCP(new BouncePacket<>(App.getBlockchain(), pcm.getPort()));
     }
+
     // When we receive a message from one of the clients we're connected to.
     @Override
     public void onIncomingData(Object o) {
@@ -134,7 +136,8 @@ public class BlockchainNetworkFileHandler extends P2PListener {
      *
      * @param block         Block to broadcast.
      * @param oldBlockchain current blockchain before new block is added.
-     * @return true if block was added to chain, false otherwise. Block is verified before submission.
+     * @return true if block was added to chain, false otherwise. Block is verified before submission
+     * (unless you're an admin. If you are, the block will be signed by this method if it isn't already).
      */
     public boolean broadcastAndAddBlockToNetwork(Block block, Blockchain oldBlockchain) {
         // Verify data, we don't need to verify hashes or signature since that's still up in the air
@@ -173,6 +176,9 @@ public class BlockchainNetworkFileHandler extends P2PListener {
     }
 
     private void registerClasses(Kryo kryo) {
+        // Kryo is our serializer
+        // This list represents all objects we serialize (send over the network or store locally as file)
+
         // Blockchain
         kryo.register(Blockchain.class);
         kryo.register(Block.class);
@@ -187,7 +193,7 @@ public class BlockchainNetworkFileHandler extends P2PListener {
         kryo.register(HashSet.class);
         kryo.register(SecurityEntity.class);
         kryo.register(ApplicationStatus.class);
-        // Not supported by this version
+        // Not supported by this version of java
         // UnmodifiableCollectionsSerializer.registerSerializers(kryo);
     }
 
@@ -195,6 +201,7 @@ public class BlockchainNetworkFileHandler extends P2PListener {
     // Warning: Connection hasn't been made yet to receive data.
     @Override
     public void onClientJoinAttempt(Client client) {
+        // Prepare the client's deserializer to correctly process incoming packets.
         registerClasses(client.getKryo());
     }
 

@@ -43,12 +43,6 @@ public enum SecurityEntity {
         this(name, true);
     }
 
-    public static void load() {
-        // load using static context
-        System.out.println("Loaded " +
-                Stream.of(SecurityEntity.values()).filter(s -> s.keyPair.getPrivate() != null).count() + " private keys.");
-    }
-
     public String getName() {
         return name;
     }
@@ -108,6 +102,11 @@ public enum SecurityEntity {
         kf = KeyFactory.getInstance("RSA");
         PublicKey pub = kf.generatePublic(pubSpec);
         return new KeyPair(pub, priv);
+    }
+    public static void load() {
+        // load using static context
+        System.out.println("Loaded " +
+                Stream.of(SecurityEntity.values()).filter(s -> s.keyPair.getPrivate() != null).count() + " private keys.");
     }
 
 }
