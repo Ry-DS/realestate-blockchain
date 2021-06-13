@@ -70,7 +70,10 @@ public class AuthorityController {
 
 
     public void cancel() throws IOException {
-        App.setRoot("login");
+        if (App.isAdmin())
+            App.setRoot("Main");
+        else
+            App.setRoot("login");
     }
 
     public void accept() {

@@ -69,6 +69,9 @@ public class LoginController {
         } else if (username.equals("bank") && password.equals("pass")) {
             App.setRoot("bank");
         } else {
+            if (!App.isAdmin() && username.equals("admin") && password.equals("pass")){
+                message.setText("Only Admins can login using the provided details");
+            } else
             message.setText("Wrong Info Provided");
         }
 
