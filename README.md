@@ -17,7 +17,7 @@ This project will be open-sourced on the 15th of May 2021.
     - `--port=<port>` - port number this application will run with.
     - `--admin` - if this flag is set, the instance will start with the ability to sign new blocks onto the network.
 
-You can also download the compiled version in the Releases tab (same program arguments apply). 
+You can also do `mvn javafx:run` to run the app.
 
 ## Limitations:
 

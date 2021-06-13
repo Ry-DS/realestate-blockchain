@@ -1,3 +1,6 @@
 .idea/
+out/
+*.raw
+pdfs/
 target/
 *.iml
