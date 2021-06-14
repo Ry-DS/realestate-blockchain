@@ -2,6 +2,7 @@
 
 A proof-of-concept real-estate management application secured with a Proof by Authority Blockchain. Demonstrates a
 possible use-case of blockchain to secure the full real-estate lifecycle, from seller to buyer, to bank.
+![image](https://user-images.githubusercontent.com/25571542/121848253-21d8a280-cd2d-11eb-9898-a64839b94c40.png)
 
 This application was built as an extension project for the class `Security in Computing & IT (COSC2536)` offered by RMIT
 in Semester 1, 2021.
